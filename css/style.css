@@ -1,0 +1,63 @@
+.clear{
+	clear: both;
+}
+
+.ic-main-container{
+	margin: 20px auto;
+	width: 900px;
+}
+
+.ic-main-container .ic-main-container__send-container{
+	padding: 20px;
+	border: 1px #ccc solid;
+	position: relative;
+	margin-top:20px;
+	background-color: #fdfdfd !important;
+	min-height: 100px;
+	overflow: auto;
+}
+
+.ic-main-container .ic-main-container__feed-container{
+	padding: 35px;
+	border: 1px #ccc solid;
+	position: relative;
+	margin-top:20px;
+	background-color: #fdfdfd !important;
+	min-height: 100px;
+}
+
+.ic-main-container .ic-main-container__send-container .ic-main-container__send-container__textarea{
+	border: 1px #d9d9d9 solid;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	z-index: 1;
+	-webkit-appearance: none;
+	margin-bottom: 20px;
+}
+
+.ic-main-container .ic-main-container__send-container .CodeMirror{
+	border: solid 1px #d9d9d9;
+	margin-bottom: 10px;
+}
+
+.ic-main-container .ic-main-container__send-container .ic-main-container__send-container__checkbox-container{
+	
+}
+
+.ic-main-container .ic-main-container__send-container .ic-main-container__send-container__button{
+	margin-left:10px;
+}
+
+.ic-main-container .ic-main-container__feed-container .CodeMirror{
+	border: solid 1px #d9d9d9;
+}
+
+.ic-main-container .ic-main-container__feed-container .notice{
+	margin-bottom: 20px;
+}
+
+.ic-main-container .ic-main-container__feed-container .fg-white{
+	padding-left: 20px;
+	padding-right: 20px;
+}
