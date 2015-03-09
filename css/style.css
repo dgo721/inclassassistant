@@ -3,27 +3,37 @@
 }
 
 .ic-main-container{
-	margin: 20px auto;
-	width: 900px;
+	margin: 65px auto;
+}
+
+.ic-main-container .ic-main-container__breadcrumbs{
+	position: fixed;
+	width: 100%;
+	left: 5%;
 }
 
 .ic-main-container .ic-main-container__send-container{
 	padding: 20px;
 	border: 1px #ccc solid;
-	position: relative;
-	margin-top:20px;
+	position: fixed;
+	margin-top: 45px;
 	background-color: #fdfdfd !important;
 	min-height: 100px;
 	overflow: auto;
+	width: 38%;
+	left: 5%;
 }
 
 .ic-main-container .ic-main-container__feed-container{
 	padding: 35px;
 	border: 1px #ccc solid;
-	position: relative;
-	margin-top:20px;
+	position: absolute;
+	right: 5%;
+	margin-top: 45px;
 	background-color: #fdfdfd !important;
 	min-height: 100px;
+	width: 50%;
+	margin-bottom: 10px;
 }
 
 .ic-main-container .ic-main-container__send-container .ic-main-container__send-container__textarea{
@@ -60,4 +70,29 @@
 .ic-main-container .ic-main-container__feed-container .fg-white{
 	padding-left: 20px;
 	padding-right: 20px;
+}
+
+@media (max-width: 900px){
+	.ic-main-container{
+		width: 80%;
+	}
+
+	.ic-main-container .ic-main-container__breadcrumbs{
+		left: auto;
+		position: relative;
+	}
+
+	.ic-main-container .ic-main-container__send-container{
+		position: relative;
+		margin: 45px auto;
+		width: 100%;
+		left: auto;
+	}
+
+	.ic-main-container .ic-main-container__feed-container{
+		position: relative;
+		right: auto;
+		width: 100%;
+	}	
+
 }

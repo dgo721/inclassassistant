@@ -1,0 +1,32 @@
+.clear{
+	clear: both;
+}
+
+.ic-main-container{
+	margin: 65px auto;
+	width: 1200px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.ic-main-container .ic-main-container_left-menu{
+	float: left;
+	padding: 20px;
+	border: 1px #ccc solid;
+}
+
+.ic-main-container .ic-main-container_left-menu .ic-main-container_left-menu__menu-container{
+	position: relative;
+	border: none;
+}
+
+.ic-main-container .ic-main-container__container{
+	padding: 20px;
+	border: 1px #ccc solid;
+	background-color: #fdfdfd !important;
+	min-height: 100px;
+	overflow: auto;
+	width: 800px;
+	float: left;
+	margin-left: 30px;
+}

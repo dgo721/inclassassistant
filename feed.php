@@ -41,16 +41,20 @@
                 readOnly: true
             });
         });
+
+        $( '#checkboxHideStudentInformation' ).change(function() {
+           $('.ic-main-container__feed-container__studentinfo').fadeToggle();
+        });
     });
     </script>
 </head>
 <body class="metro" cz-shortcut-listen="true">
 <? include 'header.php'; ?>
 <div class="ic-main-container">
-    <nav class="breadcrumbs mini">
+    <nav class="breadcrumbs mini ic-main-container__breadcrumbs">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Fundamentos de programación</a></li>
+            <li><a href="home.php">Home</a></li>
+            <li><a href="groupSelection.php">Fundamentos de programación</a></li>
             <li class="active"><a href="#">Actividad Ciclos</a></li>
         </ul>
     </nav>
@@ -91,10 +95,18 @@ public class Class<T, V> implements MyInterface {
                 Solución
             </label>
         </div>
+        <div class="clear"></div>
+        <div class="input-control checkbox place-left ic-main-container__send-container__checkbox-container" data-role="input-control">
+            <label class="inline-block">
+                <input id="checkboxHideStudentInformation" type="checkbox">
+                <span class="check"></span>
+                Ocultar información de alumnos
+            </label>
+        </div>
     </div>
     <div class="ic-main-container__feed-container">
         <div class="notice">
-            <div class="fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
+            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
                 <div class="clear"></div>
                 <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
@@ -128,7 +140,7 @@ public class Class<T, V> implements MyInterface {
             </div>
         </div>
         <div class="notice marker-on-right bg-green">
-            <div class="fg-white place-right" style="margin-bottom: 20px;">María Delgado 10:30 a.m. 11/02/2015</div>
+            <div class="ic-main-container__feed-container__studentinfo fg-white place-right" style="margin-bottom: 20px;">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
                 <div class="clear"></div>
                 <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
@@ -162,7 +174,7 @@ public class Class<T, V> implements MyInterface {
             </div>
         </div>
         <div class="notice">
-            <div class="fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
+            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
                 <div class="clear"></div>
                 <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
@@ -196,7 +208,7 @@ public class Class<T, V> implements MyInterface {
             </div>
         </div>
         <div class="notice">
-            <div class="fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
+            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
                 <div class="clear"></div>
                 <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">

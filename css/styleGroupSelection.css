@@ -1,0 +1,26 @@
+.clear{
+	clear: both;
+}
+
+.ic-main-container{
+	margin: 65px auto;
+	width: 1200px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.ic-main-container .ic-main-container__breadcrumbs{
+	position: fixed;
+	width: 100%;
+}
+
+.ic-main-container .ic-main-container__container{
+	padding: 20px;
+	border: 1px #ccc solid;
+	background-color: #fdfdfd !important;
+	min-height: 100px;
+	overflow: auto;
+	float: left;
+	margin-top: 45px;
+	width: 100%;
+}
