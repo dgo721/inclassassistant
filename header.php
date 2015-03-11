@@ -1,10 +1,11 @@
-<nav class="navigation-bar">
+<header>
+<nav class="navigation-bar fixed-top">
 <div class="navigation-bar-content">
-    <a href="/" class="element"><span class="icon-grid-view"></span> InClass Assitant </a>
+    <a href="home.php" class="element"><span class="icon-tree-view on-left-more"></span> InClass Assitant </a>
     <span class="element-divider"></span>
 
     <a class="pull-menu" href="#"></a>
-    <ul class="element-menu">
+    <!--<ul class="element-menu">
         <li>
             <a class="dropdown-toggle" href="#">Menú</a>
             <ul class="dropdown-menu " data-role="dropdown">
@@ -29,15 +30,14 @@
                 <li><a href="#">Test 2</a></li>
             </ul>
         </li>
-    </ul>
+    </ul>-->
 
     <div class="no-tablet-portrait">
-        <span class="element-divider"></span>
+        <!--<span class="element-divider"></span>
         <a class="element brand" href="#"><span class="icon-spin"></span></a>
-        <a class="element brand" href="#"><span class="icon-printer"></span></a>
         <span class="element-divider"></span>
 
-        <!--<div class="element input-element">
+        <div class="element input-element">
             <form>
                 <div class="input-control text">
                     <input type="text" placeholder="Search...">
@@ -63,3 +63,4 @@
     </div>
 </div>
 </nav>
+</header>
