@@ -6,16 +6,16 @@
 
     <!-- Load css Files -->
     <link href="./metro/css/metro-bootstrap.css" rel="stylesheet">
-    <!--<link href="./metro/css/metro-bootstrap-responsive.css" rel="stylesheet">-->
+    <link href="./metro/css/metro-bootstrap-responsive.css" rel="stylesheet">
     <link href="./metro/min/iconFont.min.css" rel="stylesheet">
     <link href="./metro/js/prettify/prettify.css" rel="stylesheet">
     <link href="./css/style.css" rel="stylesheet">
 
     <style type="text/css">
-	    .metro .example:before,
-		.metro .example:after {
-		  content: "";
-		}
+        .metro .example:before,
+        .metro .example:after {
+          content: "";
+        }
     </style>
 
     <!-- Load JavaScript Libraries -->
@@ -30,12 +30,13 @@
 </head>
 <body class="metro" cz-shortcut-listen="true">
 <? include 'header.php'; ?>
-<div class="ic-main-container">
+
+<div class="container">
 
 <div class="grid">
-	<div class="row">
+    <div class="row">
          <!--<div class="span7 offset2">-->
-         <div class="span7 offset2">
+         <div class="span7 offset4">
             
             <div class="example">
                 <form>
@@ -43,17 +44,17 @@
                         <legend>Iniciar Sesi&oacute;n</legend>
                         <label>Usuario</label>
                         <div class="input-control text" data-role="input-control">
-                            <input type="text" placeholder="A0*******/L0*******" required="required">
+                            <input type="text" placeholder="A0*******/L0*******" required="required" autofocus>
                             <button class="btn-clear" tabindex="-1"></button>
                         </div>
                         <label>Contrase&ntilde;a</label>
                         <div class="input-control password" data-role="input-control">
-                            <input type="password" placeholder="······" required="required" autofocus>
+                            <input type="password" placeholder="······" required="required">
                             <button class="btn-reveal" tabindex="-1"></button>
                         </div>
 
                         <div align="right">
-                        	<input type="submit" value="Submit" style="padding: 8px 12px;margin-top: 10px;">
+                            <input type="submit" value="Submit" style="padding: 8px 12px;margin-top: 10px;">
                         </div>
                     </fieldset>
                 </form>
