@@ -41,6 +41,16 @@
           //Llamada a ajax con servicio para desplegar la forma para registro de actividad
           content = '<div class="padding20">'+
                     '<legend>Registrar Actividad</legend>'+
+                    '<label>Asignar a grupo</label>'+
+                    '<div class="input-control select">'+
+                      '<select class="ic-main-container__container__select">'+
+                          '<option value="1">-Elegir-</option>'+
+                          '<option value="1">Programación y Estructura de Datos</option>'+
+                          '<option value="1">Fundamentos de programación</option>'+
+                          '<option value="1">Programación para dispositivos móviles</option>'+
+                          '<option value="1">Programación avanzada</option>'+
+                      '</select>'+
+                    '</div>'+
                     '<label>Nombre de Actividad</label>'+
                     '<div class="input-control text" data-role="input-control">'+
                       '<input type="text" placeholder="Nombre de Actividad">'+
@@ -252,6 +262,17 @@
                       '<input type="password" placeholder="······">'+
                       '<button class="btn-reveal" tabindex="-1"></button>'+
                     '</div>'+
+                    '<label>Grupo al que pertenece</label>'+
+                    '<div class="input-control select">'+
+                      '<select class="ic-main-container__container__select">'+
+                          '<option value="1">-Elegir-</option>'+
+                          '<option value="1">Programación y Estructura de Datos</option>'+
+                          '<option value="1">Fundamentos de programación</option>'+
+                          '<option value="1">Programación para dispositivos móviles</option>'+
+                          '<option value="1">Programación avanzada</option>'+
+                      '</select>'+
+                    '</div>'+
+                    '<div class="ic-main-container__container__second-container"></div>'+
                     '<div align="right">'+
                       '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
                     '</div>'+
