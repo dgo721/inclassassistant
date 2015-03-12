@@ -61,6 +61,7 @@
                     '</div>'+
                     '</div>';
           elementChanging.html(content);
+          $.Metro.initInputs();
         break;
         case 3:
           //Llamada a ajax con servicio para enlistar grupos con su id
@@ -228,6 +229,7 @@
                     '</div>'+
                     '</div>';
           elementChanging.html(content);
+          $.Metro.initInputs();
         break;
         case 5:
         break;
@@ -255,6 +257,7 @@
                     '</div>'+
                     '</div>';
           elementChanging.html(content);
+          $.Metro.initInputs();
         break;
         case 8:
           //Llamada a ajax con servicio para desplegar la forma para registro de maestro
@@ -280,6 +283,7 @@
                     '</div>'+
                     '</div>';
           elementChanging.html(content);
+          $.Metro.initInputs();
         break;
         default:
 
