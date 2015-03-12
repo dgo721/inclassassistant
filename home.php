@@ -38,6 +38,29 @@
           elementChanging.html(content);
         break;
         case 2:
+          //Llamada a ajax con servicio para desplegar la forma para registro de actividad
+          content = '<div class="padding20">'+
+                    '<legend>Registrar Actividad</legend>'+
+                    '<label>Nombre de Actividad</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="Nombre de Actividad">'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Parcial</label>'+
+                    '<div class="input-control select">'+
+                      '<select class="ic-main-container__container__select">'+
+                          '<option value="0">-Elegir-</option>'+
+                          '<option value="1">1</option>'+
+                          '<option value="2">2</option>'+
+                          '<option value="3">3</option>'+
+                          '<option value="4">4</option>'+
+                      '</select>'+
+                    '</div>'+
+                    '<div align="right">'+
+                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
+                    '</div>'+
+                    '</div>';
+          elementChanging.html(content);
         break;
         case 3:
           //Llamada a ajax con servicio para enlistar grupos con su id
@@ -166,10 +189,97 @@
           });
         break;
         case 4:
+          //Llamada a ajax con servicio para desplegar la forma para registro de grupo
+          content = '<div class="padding20">'+
+                    '<legend>Registrar Grupo</legend>'+
+                    '<label>Nombre de Grupo</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="Nombre de Grupo">'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Maestro</label>'+
+                    '<div class="input-control select">'+
+                      '<select class="ic-main-container__container__select">'+
+                          '<option value="0">-Elegir-</option>'+
+                          '<option value="1">Luis Humberto Gonz&aacute;lez</option>'+
+                          '<option value="2">Yolanda Martínez</option>'+
+                          '<option value="3">Armandina Leal</option>'+
+                          '<option value="4">Mar&iacute;a Guadalupe Roque</option>'+
+                      '</select>'+
+                    '</div>'+
+                    '<label>Lenguaje</label>'+
+                    '<div class="input-control select">'+
+                      '<select class="ic-main-container__container__select">'+
+                          '<option value="0">-Elegir-</option>'+
+                          '<option value="1">Java</option>'+
+                          '<option value="2">C/C++</option>'+
+                          '<option value="3">Python</option>'+
+                          '<option value="4">Objective-C</option>'+
+                      '</select>'+
+                    '</div>'+
+                    '<label>A&ntilde;adir lista de alumnos</label>'+
+                    '<div class="input-control file" data-role="input-control">'+
+          				'<input type="file" />'+
+          				'<button class="btn-file"></button>'+
+          			'</div>'
+                    '<div align="right">'+
+                      '<input type="submit" class="primary" value="Agregar lista" style="padding: 8px 12px;margin-top: 10px;">'+'&nbsp;'+
+                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'+
+                    '</div>'+
+                    '</div>';
+          elementChanging.html(content);
         break;
         case 5:
         break;
         case 6:
+          //Llamada a ajax con servicio para desplegar la forma para registro de alumno
+          content = '<div class="padding20">'+
+                    '<legend>Registrar Alumno</legend>'+
+                    '<label>No. Registro</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="A0*******" autofocus>'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Nombre</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="Nombre">'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Contrase&ntilde;a</label>'+
+                    '<div class="input-control password" data-role="input-control">'+
+                      '<input type="password" placeholder="······">'+
+                      '<button class="btn-reveal" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<div align="right">'+
+                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
+                    '</div>'+
+                    '</div>';
+          elementChanging.html(content);
+        break;
+        case 8:
+          //Llamada a ajax con servicio para desplegar la forma para registro de maestro
+          content = '<div class="padding20">'+
+                    '<legend>Registrar Maestro</legend>'+
+                    '<label>No. Registro</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="L0*******" autofocus>'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Nombre</label>'+
+                    '<div class="input-control text" data-role="input-control">'+
+                      '<input type="text" placeholder="Nombre">'+
+                      '<button class="btn-clear" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<label>Contrase&ntilde;a</label>'+
+                    '<div class="input-control password" data-role="input-control">'+
+                      '<input type="password" placeholder="······">'+
+                      '<button class="btn-reveal" tabindex="-1"></button>'+
+                    '</div>'+
+                    '<div align="right">'+
+                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
+                    '</div>'+
+                    '</div>';
+          elementChanging.html(content);
         break;
         default:
 
