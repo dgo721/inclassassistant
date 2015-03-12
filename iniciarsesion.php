@@ -9,7 +9,7 @@
     <link href="./metro/css/metro-bootstrap-responsive.css" rel="stylesheet">
     <link href="./metro/min/iconFont.min.css" rel="stylesheet">
     <link href="./metro/js/prettify/prettify.css" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/styleMenu.css" rel="stylesheet">
 
     <style type="text/css">
         .metro .example:before,
@@ -31,12 +31,10 @@
 <body class="metro" cz-shortcut-listen="true">
 <? include 'header.php'; ?>
 
-<div class="container">
-
-<div class="grid">
+<div class="ic-main-container">
     <div class="row">
          <!--<div class="span7 offset2">-->
-         <div class="span7 offset4">
+         <div class="span6 offset4">
             
             <div class="example">
                 <form>
@@ -61,8 +59,6 @@
             </div>
          </div>
      </div>
-</div>
-
 </div>
 </body>
 </html>
