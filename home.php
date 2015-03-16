@@ -1,3 +1,28 @@
+<?
+
+function debug_to_console( $data ) {
+
+  if ( is_array( $data ) )
+    $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
+  else
+    $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+  echo $output;
+}
+
+require_once ('functions.php');
+
+//registerUser("A01089909", "Diego Delgadillo", "vercus", 2);
+
+if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_POST['student-password']) and isset($_POST['student-group'])) {
+
+  debug_to_console($_POST['student-id']);
+  registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
+  //registerGroup($_POST['student-id'], $_POST['student-group']);
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,11 +69,11 @@
                     '<label>Asignar a grupo</label>'+
                     '<div class="input-control select">'+
                       '<select class="ic-main-container__container__select">'+
-                          '<option value="1">-Elegir-</option>'+
+                          '<option value="0">-Elegir-</option>'+
                           '<option value="1">Programación y Estructura de Datos</option>'+
-                          '<option value="1">Fundamentos de programación</option>'+
-                          '<option value="1">Programación para dispositivos móviles</option>'+
-                          '<option value="1">Programación avanzada</option>'+
+                          '<option value="2">Fundamentos de programación</option>'+
+                          '<option value="3">Programación para dispositivos móviles</option>'+
+                          '<option value="4">Programación avanzada</option>'+
                       '</select>'+
                     '</div>'+
                     '<label>Nombre de Actividad</label>'+
@@ -78,11 +103,11 @@
           content = '<legend>Grupo</legend>'+
                     '<div class="input-control select">'+
                       '<select class="ic-main-container__container__select">'+
-                          '<option value="1">-Elegir-</option>'+
+                          '<option value="0">-Elegir-</option>'+
                           '<option value="1">Programación y Estructura de Datos</option>'+
-                          '<option value="1">Fundamentos de programación</option>'+
-                          '<option value="1">Programación para dispositivos móviles</option>'+
-                          '<option value="1">Programación avanzada</option>'+
+                          '<option value="2">Fundamentos de programación</option>'+
+                          '<option value="3">Programación para dispositivos móviles</option>'+
+                          '<option value="4">Programación avanzada</option>'+
                       '</select>'+
                     '</div>'+
                     '<div class="ic-main-container__container__second-container"></div>'
@@ -247,24 +272,25 @@
           //Llamada a ajax con servicio para desplegar la forma para registro de alumno
           content = '<div class="padding20">'+
                     '<legend>Registrar Alumno</legend>'+
+                    '<form action="home.php" method="post" name="form-student" id="form-student">'+
                     '<label>No. Registro</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" placeholder="A0*******" autofocus>'+
+                      '<input type="text" id="student-id" placeholder="A0*******" autofocus>'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Nombre</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" placeholder="Nombre">'+
+                      '<input type="text" id="student-name" placeholder="Nombre">'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Contrase&ntilde;a</label>'+
                     '<div class="input-control password" data-role="input-control">'+
-                      '<input type="password" placeholder="······">'+
+                      '<input type="password" id="student-password" placeholder="······">'+
                       '<button class="btn-reveal" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Grupo al que pertenece</label>'+
                     '<div class="input-control select">'+
-                      '<select class="ic-main-container__container__select">'+
+                      '<select class="ic-main-container__container__select" id="student-group">'+
                           '<option value="1">-Elegir-</option>'+
                           '<option value="1">Programación y Estructura de Datos</option>'+
                           '<option value="1">Fundamentos de programación</option>'+
@@ -276,6 +302,7 @@
                     '<div align="right">'+
                       '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
                     '</div>'+
+                    '</form>'+
                     '</div>';
           elementChanging.html(content);
           $.Metro.initInputs();

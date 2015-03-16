@@ -27,7 +27,7 @@
 
             if(matricula == "" || (!(matricula.substring(0,2)=="A0") && !(matricula.substring(0,2)=="L0"))){
                 valido = false;
-                document.getElementById("notaID").innerHTML="<span class=\"\">Ingresa una matr&iacute;cula v&aacute;lida</span>";
+                document.getElementById("notaID").innerHTML="<span>Ingresa una matr&iacute;cula v&aacute;lida</span>";
             }
 
             return valido;
