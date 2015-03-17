@@ -17,6 +17,8 @@ require_once ('functions.php');
 if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_POST['student-password']) and isset($_POST['student-group'])) {
 
   debug_to_console($_POST['student-id']);
+  debug_to_console($_POST['student-name']);
+  debug_to_console($_POST['student-password']);
   registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
   //registerGroup($_POST['student-id'], $_POST['student-group']);
 }
@@ -272,40 +274,53 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
           //Llamada a ajax con servicio para desplegar la forma para registro de alumno
           content = '<div class="padding20">'+
                     '<legend>Registrar Alumno</legend>'+
-                    '<form action="home.php" method="post" name="form-student" id="form-student">'+
+                    '<form action="#" method="post" name="form-student" id="form-student">'+
                     '<label>No. Registro</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" id="student-id" placeholder="A0*******" autofocus>'+
+                      '<input type="text" id="student-id" name="student-id" placeholder="A0*******" autofocus>'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Nombre</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" id="student-name" placeholder="Nombre">'+
+                      '<input type="text" id="student-name" name="student-name" placeholder="Nombre">'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Contrase&ntilde;a</label>'+
                     '<div class="input-control password" data-role="input-control">'+
-                      '<input type="password" id="student-password" placeholder="······">'+
+                      '<input type="password" id="student-password" name="student-password" placeholder="······">'+
                       '<button class="btn-reveal" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Grupo al que pertenece</label>'+
                     '<div class="input-control select">'+
-                      '<select class="ic-main-container__container__select" id="student-group">'+
-                          '<option value="1">-Elegir-</option>'+
+                      '<select class="ic-main-container__container__select" id="student-group" name="student-group">'+
+                          '<option value="0">-Elegir-</option>'+
                           '<option value="1">Programación y Estructura de Datos</option>'+
-                          '<option value="1">Fundamentos de programación</option>'+
-                          '<option value="1">Programación para dispositivos móviles</option>'+
-                          '<option value="1">Programación avanzada</option>'+
+                          '<option value="2">Fundamentos de programación</option>'+
+                          '<option value="3">Programación para dispositivos móviles</option>'+
+                          '<option value="4">Programación avanzada</option>'+
                       '</select>'+
                     '</div>'+
-                    '<div class="ic-main-container__container__second-container"></div>'+
                     '<div align="right">'+
-                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'
+                      //'<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;" onsubmit="return validaID()">'
+                      '<input type="submit" value="Registrar" style="padding: 8px 12px;margin-top: 10px;">'+
                     '</div>'+
                     '</form>'+
                     '</div>';
           elementChanging.html(content);
           $.Metro.initInputs();
+          $("#form-student").on('submit',function(e){
+            console.log('sip6');
+
+            var $form = $(this),
+              form_id = $form.find("input[name='student-id']").val();
+
+            var details = $form.serialize();
+            console.log(details);
+
+            $.post('home.php', details, function(data) { });
+            //changeContent(6);
+            //e.preventDefault();
+          });
         break;
         case 8:
           //Llamada a ajax con servicio para desplegar la forma para registro de maestro
