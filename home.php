@@ -280,6 +280,7 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
                       '<input type="text" id="student-id" name="student-id" placeholder="A0*******" autofocus>'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
+                    '<div id="notaID" style="color: darkred;"></div>'+
                     '<label>Nombre</label>'+
                     '<div class="input-control text" data-role="input-control">'+
                       '<input type="text" id="student-name" name="student-name" placeholder="Nombre">'+
@@ -313,11 +314,25 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
 
             var $form = $(this),
               form_id = $form.find("input[name='student-id']").val();
+            console.log(form_id);
+            var $valid = /^(A0)/.test(form_id);
+            //console.log($valid);
 
-            var details = $form.serialize();
-            console.log(details);
+            if ($valid) {
+              console.log($valid);
+              var details = $form.serialize();
+              $.post('home.php', details, function(data) { });
+            } else {
+              console.log($valid);
+              content = "<span>Ingresa una matr&iacute;cula v&aacute;lida</span>";
+              $("#notaID").html(content);
+              e.preventDefault();
+            }
 
-            $.post('home.php', details, function(data) { });
+            //var details = $form.serialize();
+            //console.log(details);
+
+            //$.post('home.php', details, function(data) { });
             //changeContent(6);
             //e.preventDefault();
           });
