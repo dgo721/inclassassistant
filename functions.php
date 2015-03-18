@@ -2,6 +2,16 @@
 
 require_once ('/libs/MysqliDb.php');
 
+function debug_to_console( $data ) {
+
+  if ( is_array( $data ) )
+    $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
+  else
+    $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+  echo $output;
+}
+
 function registerUser($registerNo, $registerinfo){
 	
 	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
@@ -15,11 +25,11 @@ function registerUser($registerNo, $registerinfo){
 
 	$id = $db->insert ('user', $userdata);
 	if ($id)
-		echo 'user was created. Id=' . $id;
+		debug_to_console('user was created. Id='.$id);
 	else
-		echo 'insert failed: ' . $db->getLastError();
+		debug_to_console('insert failed: ' . $db->getLastError());
 
-	if ($type == 2){
+	if ($registerinfo["type"] == 2){
 		
 	}
 }

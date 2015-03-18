@@ -1,15 +1,5 @@
 <?
 
-function debug_to_console( $data ) {
-
-  if ( is_array( $data ) )
-    $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
-  else
-    $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
-
-  echo $output;
-}
-
 require_once ('functions.php');
 
 //registerUser("A01089909", "Diego Delgadillo", "vercus", 2);
@@ -27,7 +17,7 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
     "group" => $_POST['student-group']
   );
   
-  registerUser($_POST['student-id'], $studentinfo)
+  registerUser($_POST['student-id'], $studentinfo);
   //registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
 }
 
@@ -326,15 +316,15 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
             var $valid = /^(A0)/.test(form_id);
             //console.log($valid);
 
-            if ($valid) {
-              console.log($valid);
-              var details = $form.serialize();
-              $.post('home.php', details, function(data) { });
-            } else {
+            if (!$valid) {
               console.log($valid);
               content = "<span>Ingresa una matr&iacute;cula v&aacute;lida</span>";
               $("#notaID").html(content);
               e.preventDefault();
+            } else {
+              console.log($valid);
+              var details = $form.serialize();
+              alert($valid);
             }
 
             //var details = $form.serialize();
