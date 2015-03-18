@@ -19,8 +19,16 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
   debug_to_console($_POST['student-id']);
   debug_to_console($_POST['student-name']);
   debug_to_console($_POST['student-password']);
-  registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
-  //registerGroup($_POST['student-id'], $_POST['student-group']);
+
+  $studentinfo = array(
+    "name" => $_POST['student-name'],
+    "pass" => $_POST['student-password'],
+    "type" => 2,
+    "group" => $_POST['student-group']
+  );
+  
+  registerUser($_POST['student-id'], $studentinfo)
+  //registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
 }
 
 ?>

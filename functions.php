@@ -2,29 +2,26 @@
 
 require_once ('/libs/MysqliDb.php');
 
-function registerUser($registerNo, $name, $password, $type){
+function registerUser($registerNo, $registerinfo){
 	
 	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
 
 	$userdata = Array(
     	'registerNo' => $registerNo,
-    	'name' => $name,
-    	'password' => $db->func('SHA1(?)', Array($password)),
-    	'type' => $type
+    	'name' => $registerinfo["name"],
+    	'password' => $db->func('SHA1(?)', Array($registerinfo["pass"])),
+    	'type' => $registerinfo["type"]
   	);
 
-  $id = $db->insert ('user', $userdata);
+	$id = $db->insert ('user', $userdata);
 	if ($id)
 		echo 'user was created. Id=' . $id;
 	else
 		echo 'insert failed: ' . $db->getLastError();
-}
 
-function registerGroup($registerNo, $group){
-	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
-
-	
+	if ($type == 2){
+		
+	}
 }
 
  ?>
