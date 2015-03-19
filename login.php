@@ -1,3 +1,5 @@
+<? include 'loginfunction.php'; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,9 +27,9 @@
 			var valido;
             var matricula = formlogin.idlogin.value;
 
-            if(matricula == "" || (!(matricula.substring(0,2)=="A0") && !(matricula.substring(0,2)=="L0"))){
+            if(matricula == "" || (!(/^(A0)/.test(matricula)) && !(/^(L0)/.test(matricula)))){
                 valido = false;
-                document.getElementById("notaID").innerHTML="<span>Ingresa una matr&iacute;cula v&aacute;lida</span>";
+                document.getElementById("notaID").innerHTML="<span>Ingresa una matr&iacute;cula v&aacute;lida.</span>";
             }
 
             return valido;
@@ -64,7 +66,7 @@
                         <div id="notaID" style="color: darkred;"></div>
                         <label>Contrase&ntilde;a</label>
                         <div class="input-control password" data-role="input-control">
-                            <input type="password" placeholder="······" required="required">
+                            <input type="password" name ="passlogin" id="passlogin" placeholder="······" required="required">
                             <button class="btn-reveal" tabindex="-1"></button>
                         </div>
                         <div align="right">

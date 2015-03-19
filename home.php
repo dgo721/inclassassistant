@@ -18,7 +18,6 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
   );
   
   registerUser($_POST['student-id'], $studentinfo);
-  //registerUser($_POST['student-id'], $_POST['student-name'], $_POST['student-password'], 2);
 }
 
 ?>
@@ -275,24 +274,24 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
                     '<form action="#" method="post" name="form-student" id="form-student">'+
                     '<label>No. Registro</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" id="student-id" name="student-id" placeholder="A0*******" autofocus>'+
+                      '<input type="text" id="student-id" name="student-id" placeholder="A0*******" required="required" autofocus>'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<div id="notaID" style="color: darkred;"></div>'+
                     '<label>Nombre</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" id="student-name" name="student-name" placeholder="Nombre">'+
+                      '<input type="text" id="student-name" name="student-name" placeholder="Nombre" required="required">'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Contrase&ntilde;a</label>'+
                     '<div class="input-control password" data-role="input-control">'+
-                      '<input type="password" id="student-password" name="student-password" placeholder="······">'+
+                      '<input type="password" id="student-password" name="student-password" placeholder="······" required="required">'+
                       '<button class="btn-reveal" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Grupo al que pertenece</label>'+
                     '<div class="input-control select">'+
-                      '<select class="ic-main-container__container__select" id="student-group" name="student-group">'+
-                          '<option value="0">-Elegir-</option>'+
+                      '<select id="student-group" name="student-group" required="required">'+
+                          '<option value="">-Elegir-</option>'+
                           '<option value="1">Programación y Estructura de Datos</option>'+
                           '<option value="2">Fundamentos de programación</option>'+
                           '<option value="3">Programación para dispositivos móviles</option>'+
@@ -311,8 +310,15 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
             console.log('sip6');
 
             var $form = $(this),
-              form_id = $form.find("input[name='student-id']").val();
+              form_id = $form.find("input[name='student-id']").val(),
+              form_name = $form.find("input[name='student-name']").val(),
+              form_pass = $form.find("input[name='student-password']").val(),
+              form_group = $form.find("select[name='student-group']").val();
+            //console.log($form);
             console.log(form_id);
+            console.log(form_name);
+            console.log(form_pass);
+            console.log(form_group);
             var $valid = /^(A0)/.test(form_id);
             //console.log($valid);
 
@@ -324,7 +330,7 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
             } else {
               console.log($valid);
               var details = $form.serialize();
-              alert($valid);
+              //alert($valid);
             }
 
             //var details = $form.serialize();
@@ -341,17 +347,17 @@ if (isset($_POST['student-id']) and isset($_POST['student-name']) and isset($_PO
                     '<legend>Registrar Maestro</legend>'+
                     '<label>No. Registro</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" placeholder="L0*******" autofocus>'+
+                      '<input type="text" name="prof-id" placeholder="L0*******" autofocus>'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Nombre</label>'+
                     '<div class="input-control text" data-role="input-control">'+
-                      '<input type="text" placeholder="Nombre">'+
+                      '<input type="text" name="prof-name" placeholder="Nombre">'+
                       '<button class="btn-clear" tabindex="-1"></button>'+
                     '</div>'+
                     '<label>Contrase&ntilde;a</label>'+
                     '<div class="input-control password" data-role="input-control">'+
-                      '<input type="password" placeholder="······">'+
+                      '<input type="password" name="prof-pass" placeholder="······">'+
                       '<button class="btn-reveal" tabindex="-1"></button>'+
                     '</div>'+
                     '<div align="right">'+

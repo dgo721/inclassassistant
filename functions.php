@@ -12,6 +12,16 @@ function debug_to_console( $data ) {
   echo $output;
 }
 
+function checkUserLogin($username, $userpass){
+	
+	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
+
+	$params = Array($username, $userpass);
+	$user = $db->rawQuery("SELECT registerNo, password FROM user WHERE registerNo = ? AND password = ?", $params);
+
+	return $user;
+}
+
 function registerUser($registerNo, $registerinfo){
 	
 	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
