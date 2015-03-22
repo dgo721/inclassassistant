@@ -1,5 +1,4 @@
 <? include 'loginfunction.php'; ?>
-
 <!DOCTYPE html>
 <html>
 <head>

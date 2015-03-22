@@ -15,10 +15,22 @@ if (isset($_POST['idlogin']) and isset($_POST['passlogin'])){
     $userflag = checkUserLogin($username, $password);
 
     if (count($userflag)){
+        
+        $usertype = checkUserType($username);
+
         session_start();
         $_SESSION['username'] = $username;
         $_SESSION['password'] = $password;
-        header("Location:home.php");
+        $_SESSION['type'] = $usertype;
+
+        if ($_SESSION['type'] == 2) {
+            header("Location:home.php");
+        } elseif ($_SESSION['type'] == 1) {
+            header("Location:home.php");
+        } else {
+            header("Location:home.php");
+        }
+
     } else {
         echo '<script>alert("Usuario o contraseña incorrectos.")</script>';
     }
