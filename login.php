@@ -1,3 +1,4 @@
+<? include 'loginfunction.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +19,22 @@
         }
     </style>
 
+	<script type="text/javascript">
+		function validaID(){
+			document.getElementById("notaID").innerHTML="";
+
+			var valido;
+            var matricula = formlogin.idlogin.value;
+
+            if(matricula == "" || (!(/^(A0)/.test(matricula)) && !(/^(L0)/.test(matricula)))){
+                valido = false;
+                document.getElementById("notaID").innerHTML="<span>Ingresa una matr&iacute;cula v&aacute;lida.</span>";
+            }
+
+            return valido;
+		}
+	</script>
+
     <!-- Load JavaScript Libraries -->
     <script src="./metro/js/jquery/jquery.min.js"></script>
     <script src="./metro/js/jquery/jquery.widget.min.js"></script>
@@ -37,20 +54,20 @@
          <div class="span6 offset4">
             
             <div class="example">
-                <form>
+                <form action="#" method="post" name="formlogin" id="formlogin" onsubmit="return validaID()">
                     <fieldset>
                         <legend>Iniciar Sesi&oacute;n</legend>
                         <label>Usuario</label>
                         <div class="input-control text" data-role="input-control">
-                            <input type="text" placeholder="A0*******/L0*******" required="required" autofocus>
+                            <input type="text" name ="idlogin" id="idlogin" placeholder="A0*******/L0*******" required="required" autofocus>
                             <button class="btn-clear" tabindex="-1"></button>
                         </div>
+                        <div id="notaID" style="color: darkred;"></div>
                         <label>Contrase&ntilde;a</label>
                         <div class="input-control password" data-role="input-control">
-                            <input type="password" placeholder="······" required="required">
+                            <input type="password" name ="passlogin" id="passlogin" placeholder="······" required="required">
                             <button class="btn-reveal" tabindex="-1"></button>
                         </div>
-
                         <div align="right">
                             <input type="submit" value="Submit" style="padding: 8px 12px;margin-top: 10px;">
                         </div>
