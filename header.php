@@ -45,20 +45,25 @@
                 </div>
             </form>
         </div>-->
-
+        <?
+        if( isset($_SESSION['id']) ){
+        ?>
         <div class="element place-right">
             <a class="dropdown-toggle" href="#">
                 <span class="icon-cog"></span>
             </a>
             <ul class="dropdown-menu place-right" data-role="dropdown">
                 <li><a href="#">Configurar Cuenta</a></li>
-                <li><a href="#">Cerrar Sesión</a></li>
+                <li><a href="logout.php">Cerrar Sesión</a></li>
             </ul>
         </div>
+        <?
+        }
+        ?>
         <span class="element-divider place-right"></span>
 
         <button class="element place-right">
-            <i class="icon-user on-left"></i>Juan López
+            <? echo isset($_SESSION) ? '<i class="icon-user on-left"></i>'.$_SESSION['name'] : "";?>
         </button>
     </div>
 </div>

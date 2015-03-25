@@ -26,7 +26,7 @@
 			var valido;
             var matricula = formlogin.idlogin.value;
 
-            if(matricula == "" || (!(/^(A0)/.test(matricula)) && !(/^(L0)/.test(matricula)))){
+            if(matricula == "" || (!(/^(A)/.test(matricula)) && !(/^(L)/.test(matricula)))){
                 valido = false;
                 document.getElementById("notaID").innerHTML="<span>Ingresa una matr&iacute;cula v&aacute;lida.</span>";
             }

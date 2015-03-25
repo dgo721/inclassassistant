@@ -5,31 +5,22 @@ require_once ('functions.php');
 if (isset($_POST['idlogin']) and isset($_POST['passlogin'])){
 
     $user = $_POST['idlogin'];
-    $pass = sha1($_POST['passlogin']);
+    $pass = $_POST['passlogin'];
 
-    $username = stripslashes($user);
+    $registerNo = stripslashes($user);
     $password = stripslashes($pass);
-    $username = mysql_real_escape_string($username);
-    $password = mysql_real_escape_string($password);
 
-    $userflag = checkUserLogin($username, $password);
+    $user = checkUserLogin($registerNo, $password);
 
-    if (count($userflag)){
-        
-        $usertype = checkUserType($username);
+    if (count($user)){
 
         session_start();
-        $_SESSION['username'] = $username;
-        $_SESSION['password'] = $password;
-        $_SESSION['type'] = $usertype;
+        $_SESSION['id'] = $user['id'];
+        $_SESSION['username'] = $registerNo;
+        $_SESSION['name'] = $user['name'];
+        $_SESSION['type'] = $user['type'];
 
-        if ($_SESSION['type'] == 2) {
-            header("Location:home.php");
-        } elseif ($_SESSION['type'] == 1) {
-            header("Location:home.php");
-        } else {
-            header("Location:home.php");
-        }
+        header("Location:home.php");
 
     } else {
         echo '<script>alert("Usuario o contraseña incorrectos.")</script>';

@@ -1,6 +1,10 @@
 <?php 
 
-require_once ('/libs/MysqliDb.php');
+require_once ('./libs/php/MysqliDb.php');
+
+function newDB(){
+	return new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
+}
 
 function debug_to_console( $data ) {
 
@@ -12,49 +16,49 @@ function debug_to_console( $data ) {
   echo $output;
 }
 
-function registerUser($registerNo, $registerinfo){
-	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
-
-	$userdata = Array(
-    	'registerNo' => $registerNo,
-    	'name' => $registerinfo["name"],
-    	'password' => $db->func('SHA1(?)', Array($registerinfo["pass"])),
-    	'type' => $registerinfo["type"]
-  	);
-
-	$id = $db->insert ('user', $userdata);
-	if ($id)
-		debug_to_console('user was created. Id='.$id);
-	else
-		debug_to_console('insert failed: ' . $db->getLastError());
-
-	if ($registerinfo["type"] == 2){
-		
+function registerUser($registerNo, $registerInfo){
+	$db = newDB();
+	$db->where('registerNo', $registerNo);
+	$user = $db->getOne('User', 'id');
+	if( $db->count == 0 ){
+		$insert = Array(
+	    	'registerNo' => $registerNo,
+	    	'name' => $registerInfo["name"],
+	    	'password' => $db->func('SHA1(?)', Array($registerInfo["pass"])),
+	    	'type' => $registerInfo["type"]
+	  	);
+		$id = $db->insert ('user', $insert);
+	}else{
+		$id = $user['id'];
 	}
+	return $id;
 }
 
-function registerGroup($groupname, $groupprof, $grouplanguage){
-	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
+function registerUserClass($id, $class){
+	$db = newDB();
+	$insert = Array(
+    	'idUser' => $id,
+    	'idClass' => $class
+  	);
+	$id = $db->insert ('UserClass', $insert);
+	return $id;
+}
 
-	$groupdata = Array(
+function registerGroup($groupname, $grouplanguage, $groupprof){
+	$db = newDB();
+	$insert= Array(
     	'name' => $groupname,
+    	'idTeacher' => $groupprof,
     	'idLanguage' => $grouplanguage
   	);
+	$id = $db->insert('Class', $insert); //Syntax Error
 
-	debug_to_console($groupdata);
-	$id = $db->insert ('group', $groupdata); //Syntax Error
-
-	if ($id)
-		debug_to_console('group was created. Id='.$id);
-	else
-		debug_to_console('insert failed: ' . $db->getLastError());
+	return $id;
 }
 
 function registerTask($taskgroup, $taskname, $taskperiod){
 	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
+	$db = newDB();
 
 	$taskdata = Array(
     	'idClass' => $taskgroup,
@@ -65,34 +69,118 @@ function registerTask($taskgroup, $taskname, $taskperiod){
   	);
 
 	$id = $db->insert ('task', $taskdata);
-	if ($id)
-		debug_to_console('task was created. Id='.$id);
-	else
-		debug_to_console('insert failed: ' . $db->getLastError());
-
-	if ($registerinfo["type"] == 2){
-		
-	}
+	return $id;
 }
 
-function checkUserLogin($username, $userpass){
+function checkUserLogin($registerNo, $userpass){
 	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
-
-	$params = Array($username, $userpass);
-	$user = $db->rawQuery("SELECT registerNo, password FROM user WHERE registerNo = ? AND password = ?", $params);
+	$db = newDB();
+	$userpass = sha1($userpass);
+	$db->where('registerNo', $registerNo );
+	$db->where('password', $userpass );
+	$user = $db->getOne('User', 'id, type, name');
 
 	return $user;
 }
 
-function checkUserType($username){
-	
-	$db = new MysqliDb ('localhost', 'root', '', 'InClassAssistant');
+function getUserGroups($id){
+	$db = newDB();
 
-	$params = Array($username);
-	$type = $db->rawQuery("SELECT type FROM user WHERE registerNo = ?", $params);
-
-	return $type[0];
+	$db->join('Class c', 'c.id=uc.idClass');
+	$db->where('uc.idUser', $id );
+	$groups = $db->get('UserClass uc', null, 'c.id, c.name');
+	return $groups;
 }
 
- ?>
+function getTeacherUserGroups($id){
+	$db = newDB();
+	$db->where('c.idTeacher', $id );
+	$user = $db->get('Class c', null, 'c.id, c.name');
+	return $user;
+}
+
+function getAllGroups(){
+	$db = newDB();
+	$groups = $db->get('Class c', null, 'c.id, c.name');
+	return $groups;
+}
+
+function getTeachers(){
+	$db = newDB();
+	$db->where('type', 1);
+	$users = $db->get('User u', null, 'u.id, u.name');
+	return $users;
+}
+
+function getTasksFromClass($class){
+	$db = newDB();
+	$db->where('idClass', $class);
+	$db->orderBy('t.registerDate','DESC');
+	$tasks = $db->get('Task t', null, 't.id, t.name, t.period, t.active');
+	return $tasks;
+}
+
+function authorizeUserInClass($class, $user){
+	$db = newDB();
+	$db->where('uc.idClass', $class);
+	$db->where('uc.idUser', $user);
+	$uc = $db->get('UserClass uc', null, 'uc.id');
+
+	if( $db->count > 0 ){
+		return 1;
+	}else{
+		$db->where('c.id', $class);
+		$db->where('c.idTeacher', $user);
+		$groups = $db->get('Class c', null, 'c.id');
+		if( $db->count > 0 ){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+}
+
+function getClassInfo($class){
+	$db = newDB();
+	$db->where('c.id', $class);
+	$group = $db->getOne('Class c', 'c.name, c.idLanguage');
+	return $group;
+}
+
+function getTaskInfo($task){
+	$db = newDB();
+	$db->where('t.id', $task);
+	$task = $db->getOne('Task t', 't.name, t.active');
+	return $task;
+}
+
+function updateActiveTask($task, $closeOrOpen){
+	$db = newDB();
+	$update = Array (
+	    'active' => $closeOrOpen
+	);
+	$db->where ('id', $task);
+	if ($db->update ('Task', $update))
+	    return $task;
+}
+
+function getRecentTasks($user, $userType){
+	$db = newDB();
+	if( $userType == 1 ){
+		$db->join('Class c', 'c.id=t.idClass');
+		$db->where('c.idTeacher', $user );
+	}else if( $userType == 2 ){
+		$sq = $db->subQuery ();
+		$sq->join('Class c', 'c.id=uc.idClass');
+		$sq->where('uc.idUser', $user );
+		$sq->get('UserClass uc', null, 'c.id');
+		$db->where ('t.idClass', $sq, 'in');
+	}
+	$db->where('t.active', 1);
+	$db->where('t.registerDate BETWEEN DATE_SUB(NOW(), INTERVAL 15 DAY) AND NOW()');
+	$db->orderBy('t.registerDate','DESC');
+	$tasks = $db->get('Task t', null, 't.id, t.idClass, t.name, t.period, t.active');
+	return $tasks;
+}
+
+?>

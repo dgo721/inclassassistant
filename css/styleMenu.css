@@ -30,3 +30,45 @@
 	float: left;
 	margin-left: 30px;
 }
+
+.action-message{
+	border: solid 1px;
+  	padding: 10px;
+}
+
+.action-message.success{
+	border-color: green;
+  	background-color: #B0E0B6;
+  	color: green;
+}
+
+.action-message.error{
+	border-color: rgb(184, 0, 0);
+  	background-color: #E0B0BF;
+  	color: rgb(184, 0, 0);
+}
+
+.ajax-file-upload-custom{
+	line-height: 0px !important;
+	height: auto !important;
+	background-color: green !important;
+	cursor: pointer !important;
+	padding: 18px !important;
+}
+
+.ajax-file-upload-custom:hover{
+  background-color: green !important;
+}
+
+.ajax-upload-dragdrop{
+	width: 100% !important;
+}
+
+.metro .bg-lightRed {
+  background-color: #F0A8A1 !important;
+}
+
+.metro .bg-lightGreen {
+  background-color: #A8D37B !important;
+}
+

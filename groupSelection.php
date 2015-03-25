@@ -1,3 +1,9 @@
+<?
+require_once "session.php";
+
+require_once "authorizeUserClass.php";
+$class = getClassInfo($_GET['gid']);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,37 +37,25 @@
     <nav class="breadcrumbs mini ic-main-container__breadcrumbs">
       <ul>
           <li><a href="home.php">Home</a></li>
-          <li class="active"><a href="#">Fundamentos de programación</a></li>
+          <li class="active"><a href="#"><? echo $class['name']; ?></a></li>
       </ul>
     </nav>
     <div class="ic-main-container__container">
       <legend>Actividades</legend>
       <table class="table striped bordered hovered">
         <tbody>
-          <tr class="">
-            <td>Variables</td>
-            <td class="text-center"><a href="#">Ver historial</a></td>
-            <td class="text-center"><a href="feed.php">Ir a Actividad<span class="icon-new-tab on-right"></span></a></td>
-          </tr>
-          <tr class="">
-            <td>Tipos de datos</td>
-            <td class="text-center"><a href="#">Ver historial</a></td>
-            <td class="text-center"><a href="feed.php">Ir a Actividad<span class="icon-new-tab on-right"></span></a></td>
-          </tr>
-          <tr class="">
-            <td>Condicionales</td>
-            <td class="text-center"><a href="#">Ver historial</a></td>
-            <td class="text-center"><a href="feed.php">Ir a Actividad<span class="icon-new-tab on-right"></span></a></td>
-          </tr>
-          <tr class=""><td>Ciclos</td>
-            <td class="text-center"><a href="#">Ver historial</a></td>
-            <td class="text-center"><a href="feed.php">Ir a Actividad<span class="icon-new-tab on-right"></span></a></td>
-          </tr>
-          <tr class="">
-            <td>Funciones</td>
-            <td class="text-center"><a href="#">Ver historial</a></td>
-            <td class="text-center"><a href="feed.php">Ir a Actividad<span class="icon-new-tab on-right"></span></a></td>
-          </tr>
+          <?
+          $results = getTasksFromClass($_GET['id']);
+          foreach ($results as $result) {
+            ?>
+              <tr class="">
+                <td><? echo $result['name'];?></td>
+                <td class="text-center"><a href="#">Ver historial</a></td>
+                <td class="text-center"><? if($result['active']){ ?><a href=<? echo '"feed.php?gid='.$_GET['id'].'&tid='.$result['id'].'"'?>>Ir a Actividad<span class="icon-new-tab on-right"></span></a><? } ?></td>
+              </tr>
+            <?
+          }
+          ?>
         </tbody>
       </table>
     </div>

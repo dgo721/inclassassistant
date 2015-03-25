@@ -1,3 +1,14 @@
+<?
+require_once "session.php";
+
+require_once "authorizeUserClassTask.php";
+$task = getTaskInfo($_GET['tid']);
+var_dump($task);
+$class = getClassInfo($_GET['gid']);
+if( !$task['active'] ){
+  header("Location:home.php");
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,25 +32,119 @@
     <script src="./codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" href="./codemirror/lib/codemirror.css">
     <script src="./codemirror/mode/clike/clike.js"></script>
+    <script src="./codemirror/mode/python/python.js"></script>
+
+    <!-- Socket.io Library -->
+    <script src="./socket.io.js"></script>
 
     <title>InClass Assistant</title>
     <script src="./metro/min/metro.min.js"></script>
+
     <script>
+    var language = <?echo $class['idLanguage']; ?>;
+    var modeLanguage = 'text';
+    switch (language){
+      case 1:
+        modeLanguage = 'text/x-java'
+      break;
+      case 2:
+        modeLanguage = 'text/x-csrc'
+      break;
+      case 3:
+        modeLanguage = 'text/x-csharp'
+      break;
+      case 4:
+        modeLanguage = 'text/x-python'
+      break;
+      default:   
+    };
+    var websocket = io.connect("http://localhost:6969");
+    var  roomInfo = {
+      'sender': <?php echo $_SESSION['id']?>,  //user
+      'room' : <?php echo $_GET['gid']?>    //Class
+    }
+    $( document ).ready(function() {
+      websocket.emit('openStream', roomInfo);
+      websocket.on("showMessages", showMessages);
+      function showMessages( data ){
+        console.log(data);
+        for (var i = 0; i < data.length; i++) { 
+          var id   = data[i].idUser;
+          var name = data[i].name;
+          var time = data[i].submissionDate;
+          var code = data[i].code;
+          var type = data[i].type;
+          var solution = data[i].solution;
+
+          time = new Date(time);
+          var toutc = time.toString();
+          var locdat = new Date(toutc + " UTC");
+          time = locdat.toLocaleString();
+
+          var solutionClass = '';
+          var messageReceivedClass = 'marker-on-right';
+          var messageReceivedPositionClass = '';
+          var messageReceivedPositionStyleMargin = '';
+          if( solution == 1 ){
+            solutionClass = 'bg-amber';
+          }
+          if( roomInfo.sender != data[i].idUser ){
+            messageReceivedClass = 'bg-green';
+            messageReceivedPositionClass = 'place-right';
+            messageReceivedPositionStyleMargin = '20px';
+          }
+          var textareaElement = $('<textarea>')
+                                      .addClass('ic-main-container__feed-container__textarea')
+                                      .val(code);
+          var element = $('<div>')
+                          .addClass('notice '+messageReceivedClass+' '+solutionClass)
+                          .append(
+                            $('<div>')
+                              .addClass('ic-main-container__feed-container__studentinfo fg-white '+messageReceivedPositionClass)
+                              .css('margin-bottom', messageReceivedPositionStyleMargin)
+                              .html(name+' '+time)
+                          )
+                          .append(
+                            $('<div>')
+                              .addClass('padding20')
+                              .append(
+                                $('<div>')
+                                  .addClass('clear')
+                              )
+                              .append(textareaElement)
+                          );
+          $('.ic-main-container__feed-container').prepend(element);
+          CodeMirror.fromTextArea(textareaElement.get(0), {
+              lineNumbers: true,
+              matchBrackets: true,
+              mode: modeLanguage
+          });
+        }
+      }
+    });
+    function submitMessage(){
+      var code = editor.getValue();
+      var solution = $('#checkSolution').is(":checked") ? 1 : 0;
+      if ( code != '' ){
+        var data = {
+          'code':  code,
+          'idUser': roomInfo.sender,
+          'idTask': roomInfo.room,
+          'solution': solution
+        }
+        console.log(websocket.emit('sendMessage', data));
+      }
+    }
+    </script>
+
+    <script>
+    var editor;
     $( document ).ready(function() {
         var textarea = $('.ic-main-container__send-container__textarea').get( 0 );
-        var editor = CodeMirror.fromTextArea(textarea, {
+        editor = CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
             matchBrackets: true,
-            mode: "text/x-java"
-        });
-
-        $('.ic-main-container__feed-container__textarea' ).each(function() {
-            CodeMirror.fromTextArea(this, {
-                lineNumbers: true,
-                matchBrackets: true,
-                mode: "text/x-java",
-                readOnly: true
-            });
+            mode: modeLanguage
         });
 
         $( '#checkboxHideStudentInformation' ).change(function() {
@@ -47,6 +152,7 @@
         });
     });
     </script>
+
 </head>
 <body class="metro" cz-shortcut-listen="true">
 <? include 'header.php'; ?>
@@ -54,8 +160,8 @@
     <nav class="breadcrumbs mini ic-main-container__breadcrumbs">
         <ul>
             <li><a href="home.php">Home</a></li>
-            <li><a href="groupSelection.php">Fundamentos de programación</a></li>
-            <li class="active"><a href="#">Actividad Ciclos</a></li>
+            <li><a href=<? echo '"groupSelection.php?id='.$_GET['gid'].'"';?>><? echo $class['name']; ?></a></li>
+            <li class="active"><a href="#"><? echo $task['name']; ?></a></li>
         </ul>
     </nav>
     <div class="ic-main-container__send-container">
@@ -87,10 +193,11 @@ public class Class<T, V> implements MyInterface {
     member = value;
   }
 }</textarea>
-        <input class="place-right ic-main-container__send-container__button" type="button" value="Enviar">
+        <input class="place-right ic-main-container__send-container__button" type="button" value="Enviar" onclick="submitMessage();">
+        <? if($_SESSION['type'] != 2){ ?>
         <div class="input-control checkbox place-right ic-main-container__send-container__checkbox-container" data-role="input-control">
             <label class="inline-block">
-                <input type="checkbox">
+                <input id="checkSolution" type="checkbox">
                 <span class="check"></span>
                 Solución
             </label>
@@ -103,9 +210,12 @@ public class Class<T, V> implements MyInterface {
                 Ocultar información de alumnos
             </label>
         </div>
+        <? } ?>
     </div>
     <div class="ic-main-container__feed-container">
-        <div class="notice">
+      
+
+        <!--<div class="notice">
             <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
                 <div class="clear"></div>
@@ -139,6 +249,10 @@ public class Class<T, V> implements MyInterface {
 }</textarea>
             </div>
         </div>
+
+
+
+
         <div class="notice marker-on-right bg-green">
             <div class="ic-main-container__feed-container__studentinfo fg-white place-right" style="margin-bottom: 20px;">María Delgado 10:30 a.m. 11/02/2015</div>
             <div class="padding20">
@@ -240,7 +354,7 @@ public class Class<T, V> implements MyInterface {
   }
 }</textarea>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 </body>
