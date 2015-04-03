@@ -565,6 +565,7 @@ require_once "functions.php";
 
           $(".ic-main-container__container__delete").on('click', function(){
                 var groupId = $(this).find('input').val();
+                var trow = $(this).parent().parent();
                 $.Dialog({
                     overlay: true,
                     shadow: true,
@@ -593,7 +594,7 @@ require_once "functions.php";
                             };
                             var results = ajaxCall(data, './removeData.php');
                             $.Dialog.close();
-                            changeContent(5);
+                            trow.remove();
                             var content = '';
                             console.log(results);
                             if( results ){
@@ -839,13 +840,34 @@ require_once "functions.php";
           content = '<legend>Maestros</legend>';
           if(results.length > 0){ 
             content +='<table class="table striped bordered hovered">'+
+            			'<thead>'+
+            			'<tr>'+
+            				'<th class="text-left" colspan="3">Nombre</th>'+
+            			'</tr>'+
+            			'</thead>'+
                         '<tbody>';
                           for (var i = 0; i < results.length; i++) {
                             content += '<tr>'+
                               '<td>'+results[i].name+'</td>'+
                               '<td class="text-center"><a href="#">Modificar</a></td>'+
                               '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
+                              '</tr>'+
                             '</tr>';
+                            var groupdata ={
+				                id: results[i].id,
+				                type: 1,
+				                getData: 1
+				              };
+				            var groupresults = ajaxCall(groupdata,'./getData.php');
+				            if(groupresults.length > 0){
+				            	content += '<tr class="group-list"><td colspan="3">' +
+				            							'<i>Grupos a cargo</i><ul>';
+                        		for (var j = 0; j < groupresults.length; j++){
+                        			content += '<li>'+groupresults[j].name+'</li>';
+                        		}
+                        		content += '</ul></td></tr>';
+				            }
+				            var groupresults = null;
                           }
             content +=  '</tbody>'+
                       '</table>'+
@@ -857,6 +879,7 @@ require_once "functions.php";
 
           $(".ic-main-container__container__delete").on('click', function(){
                 var userId = $(this).find('input').val();
+                var trow = $(this).parent().parent();
                 $.Dialog({
                     overlay: true,
                     shadow: true,
@@ -885,7 +908,11 @@ require_once "functions.php";
                             };
                             var results = ajaxCall(data, './removeData.php');
                             $.Dialog.close();
-                            changeContent(9);
+                            //changeContent(9);
+                            if (trow.next().attr('class') == 'group-list'){
+                            	trow.next().remove();
+                            }
+                            trow.remove();
                             var content = '';
                             console.log(results);
                             if( results ){
