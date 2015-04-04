@@ -26,6 +26,9 @@ require_once "functions.php";
     <!-- Load jQuery Uploader Libraries -->
     <script src="./libs/js/jquery.uploadfile.js"></script>
 
+    <!-- Load Datatable Library -->
+    <script src="./libs/js/datatables.min.js"></script>
+
     <title>InClass Assistant</title>
     <script src="./metro/min/metro.min.js"></script>
     <script>
@@ -35,7 +38,6 @@ require_once "functions.php";
     };
 
     function ajaxCall(data, url){
-      console.log(data);
       var ajaxResponse;
         $.ajax({
           type: 'POST',
@@ -47,7 +49,6 @@ require_once "functions.php";
             ajaxResponse = "Error: " + z;
           },
           success: function(response, string) {
-            console.log(string);
             ajaxResponse =  response;
           }
         });
@@ -159,7 +160,6 @@ require_once "functions.php";
               };
             var results = ajaxCall(data, './registerData.php');
             var content = '';
-            console.log(results);
             if( results ){
               content = $('<div>')
                           .addClass('action-message success')
@@ -226,7 +226,6 @@ require_once "functions.php";
                 group: groupId
             };
             var results = ajaxCall(data, './getData.php');
-            console.log(results);
             if(results.length > 0){ 
               content = '<legend style="margin-top: 30px;">Actividades</legend>'+
                     '<table class="table striped bordered hovered">'+
@@ -353,7 +352,7 @@ require_once "functions.php";
                         $("#acceptChange").on('click', function(){
                             var data ={
                               id: userInfo.id,
-                              removeData: 4,
+                              removeData: 2,
                               task: taskId
                             };
                             var results = ajaxCall(data, './removeData.php');
@@ -454,7 +453,6 @@ require_once "functions.php";
               };
             var results = ajaxCall(data, './registerData.php');
             var content = '';
-            console.log(results);
             if( results ){
               content = $('<div>')
                           .addClass('action-message success')
@@ -589,7 +587,7 @@ require_once "functions.php";
                         $("#acceptChange").on('click', function(){
                             var data ={
                               id: userInfo.id,
-                              removeData: 3,
+                              removeData: 1,
                               group: groupId
                             };
                             var results = ajaxCall(data, './removeData.php');
@@ -679,9 +677,7 @@ require_once "functions.php";
               form_name = $form.find("input[name='student-name']"),
               form_pass = $form.find("input[name='student-password']"),
               form_group = $form.find("select[name='student-group']");
-            //console.log($form);
             var $valid = /^(A)/.test(form_id.val());
-            //console.log($valid);
             if( !$valid ){
               content = $('<div>')
                           .addClass('action-message error')
@@ -707,7 +703,6 @@ require_once "functions.php";
                 };
               var results = ajaxCall(data, './registerData.php');
               var content = '';
-              console.log(results);
               if( results ){
                 content = $('<div>')
                             .addClass('action-message success')
@@ -739,7 +734,132 @@ require_once "functions.php";
           });
         break;
         case 7:
+<<<<<<< Updated upstream
 
+=======
+          //Llamada a ajax con servicio para enlistar grupos con su id
+          if( userInfo.type == 0 ){
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 3
+              };
+          }else{
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 1
+              };
+          }
+          var results = ajaxCall(data, './getData.php');
+          if(results.length > 0){ 
+            content = '<legend>Grupo</legend>'+
+                      '<div class="input-control select">'+
+                        '<select class="ic-main-container__container__select">'+
+                            '<option value="0">-Elegir-</option>';
+                            if( userInfo.type == 0 ){
+                              content += '<option value="all">Todos los alumnos en el sistema</option>';
+                            }
+                            for (var i = 0; i < results.length; i++) {
+                              content +=  '<option value="'+results[i].id+'">'+results[i].name+'</option>';
+                            }
+            content +=  '</select>'+
+                      '</div>'+
+                      '<div class="ic-main-container__container__second-container"></div>';
+          }else{
+            content = '<div class="padding20">No hay grupos registrados a cargo.</div>';
+          }
+          elementChanging.html(content);
+          
+          $(".ic-main-container__container__select").change(function(){
+            var currentSelect = $( this );
+            if( currentSelect.val() == 'all' ){
+              var data ={
+                  id: userInfo.id,
+                  getData: 8,
+                  group: groupId
+              };
+              var results = ajaxCall(data, './getData.php');
+            }else{
+              var groupId = parseInt(currentSelect.val());
+              var data ={
+                  id: userInfo.id,
+                  getData: 5,
+                  group: groupId
+              };
+              var results = ajaxCall(data, './getData.php');
+            }
+            if(results.length > 0){
+              content = '<table id="reportTable" class="table striped hovered dataTable">'+
+                      '<thead>'+
+                          '<tr>'+
+                              '<th>Matrícula</th>'+
+                              '<th>Nombre</th>'+
+                              '<th></th>'+
+                              '<th></th>'+
+                          '</tr>'+
+                        '</thead>';
+                        for (var i = 0; i < results.length; i++) {
+                          content +=  '<tr><td style="text-align:center;">'+results[i].registerNo+'</td><td style="text-align:center;">'+results[i].name+'</td><td><input type="hidden" value="'+results[i].id+'">Modificar</td><td><input type="hidden" value="'+results[i].id+'"><a href="#" class="ic-main-container__container__delete">Eliminar</a></td></tr>';
+                        }
+              content += '</table>';
+            }else{
+              content = '<div class="padding20">No hay alumnos registrados.</div>';
+            }
+            
+            $(".ic-main-container__container__second-container").html(content);
+
+            var bindDelete = function(){
+              $(".ic-main-container__container__delete").on('click', function(){
+                var studentId = $(this).parent().find('input').val();
+                var rowDelete = $(this).parent().parent();
+                $.Dialog({
+                    overlay: true,
+                    shadow: true,
+                    flat: true,
+                    title: 'Flat window',
+                    content: '',
+                    padding: 10,
+                    onShow: function(_dialog){
+                        var content = '<div class="text-center padding20">' +
+                            '¿Estás seguro de eliminar este alumno?' +
+                            '</div>' +
+                            '<div class="padding20">' +
+                            '<button id ="acceptChange" class="place-left button primary">ACEPTAR</button> '+
+                            '<button class="place-right button" type="button" onclick="$.Dialog.close()">CANCELAR</button> '+
+                            '</div>';
+             
+                        $.Dialog.title("Confirmación");
+                        $.Dialog.content(content);
+                        $.Metro.initInputs();
+                        $("#acceptChange").on('click', function(){
+                          rowDelete.addClass('selectedDelete');
+                          var data ={
+                            id: userInfo.id,
+                            removeData: 3,
+                            student: studentId
+                          };
+                          var results = ajaxCall(data, './removeData.php');
+                          table.row('.selectedDelete').remove().draw( false );
+                          $.Dialog.close();
+                        });
+                    }
+                });
+              });
+            }
+            if( $('#reportTable').length > 0 ){
+            var table = $('#reportTable')
+              .on( 'order.dt',  function () { bindDelete(); } )
+              .on( 'search.dt', function () { bindDelete(); } )
+              .on( 'page.dt',   function () { bindDelete(); } )
+              .DataTable({
+                'columnDefs': [{ "targets": [2,3], "orderable": false }],
+                'language': {
+                  'url': './libs/js/spanish.json'
+                }
+              });
+            }
+          });
         break;
         case 8:
           //Llamada a ajax con servicio para desplegar la forma para registro de maestro
@@ -801,7 +921,6 @@ require_once "functions.php";
                 };
               var results = ajaxCall(data, './registerData.php');
               var content = '';
-              console.log(results);
               if( results ){
                 content = $('<div>')
                             .addClass('action-message success')
@@ -903,7 +1022,7 @@ require_once "functions.php";
                         $("#acceptChange").on('click', function(){
                             var data ={
                               id: userInfo.id,
-                              removeData: 2,
+                              removeData: 0,
                               user: userId
                             };
                             var results = ajaxCall(data, './removeData.php');
@@ -938,6 +1057,132 @@ require_once "functions.php";
                     }
                 });
             });
+        case 10:
+          //Llamada a ajax con servicio para enlistar grupos con su id
+          if( userInfo.type == 0 ){
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 3
+              };
+          }else{
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 1
+              };
+          }
+          var results = ajaxCall(data, './getData.php');
+          if(results.length > 0){ 
+            content = '<legend>Grupo</legend>'+
+                      '<div class="input-control select">'+
+                        '<select class="ic-main-container__container__select">'+
+                            '<option value="0">-Elegir-</option>';
+                            if( userInfo.type == 0 ){
+                              content += '<option value="all">Todos los alumnos en el sistema</option>';
+                            }
+                            for (var i = 0; i < results.length; i++) {
+                              content +=  '<option value="'+results[i].id+'">'+results[i].name+'</option>';
+                            }
+            content +=  '</select>'+
+                      '</div>'+
+                      '<div class="ic-main-container__container__second-container"></div>';
+          }else{
+            content = '<div class="padding20">No hay grupos registrados a cargo.</div>';
+          }
+          elementChanging.html(content);
+          
+          $(".ic-main-container__container__select").change(function(){
+            var currentSelect = $( this );
+            if( currentSelect.val() == 'all' ){
+              var data ={
+                  id: userInfo.id,
+                  getData: 8,
+                  group: groupId
+              };
+              var results = ajaxCall(data, './getData.php');
+            }else{
+              var groupId = parseInt(currentSelect.val());
+              var data ={
+                  id: userInfo.id,
+                  getData: 5,
+                  group: groupId
+              };
+            }
+            var results = ajaxCall(data, './getData.php');
+            if(results.length > 0){
+              content = '<legend>Alumnos</legend>'+
+                      '<table id="reportTable" class="table striped hovered dataTable">'+
+                      '<thead>'+
+                          '<tr>'+
+                              '<th>Matrícula</th>'+
+                              '<th>Nombre</th>'+
+                          '</tr>'+
+                        '</thead>';
+                        for (var i = 0; i < results.length; i++) {
+                          content +=  '<tr><td style="text-align:center;">'+results[i].registerNo+'</td><td style="text-align:center;">'+results[i].name+'</td></tr>';
+                        }
+              content += '</table>';
+            }else{
+              content = '<div class="padding20">No hay alumnos registrados.</div>';
+            }
+            
+            $(".ic-main-container__container__second-container").html(content);
+
+            if( $('#reportTable').length > 0 ){
+              $('#reportTable').DataTable({
+                'language': {
+                  'url': './libs/js/spanish.json'
+                }
+              });
+            }
+            });
+        break;
+        case 11:
+          //Llamada a ajax con servicio para enlistar grupos con su id
+          if( userInfo.type == 0 ){
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 6
+              };
+          }else{
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 7
+              };
+          }
+          var results = ajaxCall(data, './getData.php');
+          if(results.length > 0){ 
+            content = '<legend>Grupos</legend>'+
+                      '<table id="reportTable" class="table striped hovered dataTable">'+
+                      '<thead>'+
+                          '<tr>'+
+                              '<th>Nombre</th>'+
+                              '<th>Número de Actividades Activas</th>'+
+                              '<th>Número de Actividades Inactivas</th>'+
+                          '</tr>'+
+                        '</thead>';
+                            for (var i = 0; i < results.length; i++) {
+                              results[i].active = results[i].active == null ? 0 : results[i].active; 
+                              results[i].inactive = results[i].inactive == null ? 0 : results[i].inactive; 
+                              content +=  '<tr><td style="text-align:left;"><input type="hidden" value="'+results[i].id+'">'+results[i].name+'</td><td style="text-align:center;">'+results[i].active+'</td><td style="text-align:center;">'+results[i].inactive+'</td></tr>';
+                            }
+            content +=  '</select>'+
+                      '</div>'+
+                      '<div class="ic-main-container__container__second-container"></div>';
+          }else{
+            content = '<div class="padding20">No hay grupos registrados a cargo.</div>';
+          }
+          elementChanging.html(content);
+          if( $('#reportTable').length > 0 ){
+            $('#reportTable').DataTable({
+              'language': {
+                'url': './libs/js/spanish.json'
+              }
+            });
+          }
         break;
         default:
 
