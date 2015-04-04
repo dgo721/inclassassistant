@@ -183,4 +183,25 @@ function getRecentTasks($user, $userType){
 	return $tasks;
 }
 
+function removeUser($user){
+	$db = newDB();
+	$db->where('id', $user);
+	if($db->delete('user'))
+		return 'successfully deleted user' + $user;
+}
+
+function removeGroup($group){
+	$db = newDB();
+	$db->where('id', $group);
+	if($db->delete('class'))
+		return 'successfully deleted group' + $group;
+}
+
+function removeTask($task){
+	$db = newDB();
+	$db->where('id', $task);
+	if($db->delete('task'))
+		return 'successfully deleted task' + $task;
+}
+
 ?>

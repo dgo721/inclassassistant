@@ -121,7 +121,7 @@ require_once "functions.php";
                           for (var i = 0; i < results.length; i++) {
                             content +=  '<option value="'+results[i].id+'">'+results[i].name+'</option>';
                           }
-            content +=   '</select>'+
+            content +='</select>'+
                       '</div>'+
                       '<label>Nombre de Actividad</label>'+
                       '<div class="input-control text" data-role="input-control">'+
@@ -245,7 +245,7 @@ require_once "functions.php";
                             '<td class="text-center"><a href="#">Modificar</a></td>'+
                             '<td class="text-center">'+ activeOpen +'</td>'+
                             '<td class="text-center">'+ activeClose +'</td>'+
-                            '<td class="text-center"><a href="#" class="ic-main-container__container__delete">Eliminar</a></td>'+
+                            '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
                           '</tr>';
               }
               content +='</tbody>'+
@@ -329,6 +329,7 @@ require_once "functions.php";
                 });
             });
             $(".ic-main-container__container__delete").on('click', function(){
+                var taskId = $(this).find('input').val();
                 $.Dialog({
                     overlay: true,
                     shadow: true,
@@ -342,13 +343,44 @@ require_once "functions.php";
                             '¿Estás seguro de eliminar esta actvidad?' +
                             '</div>' +
                             '<div class="padding20">' +
-                            '<button class="place-left button primary">ACEPTAR</button> '+
+                            '<button id="acceptChange" class="place-left button primary">ACEPTAR</button> '+
                             '<button class="place-right button" type="button" onclick="$.Dialog.close()">CANCELAR</button> '+
                             '</div>';
              
                         $.Dialog.title("Confirmación");
                         $.Dialog.content(content);
                         $.Metro.initInputs();
+                        $("#acceptChange").on('click', function(){
+                            var data ={
+                              id: userInfo.id,
+                              removeData: 4,
+                              task: taskId
+                            };
+                            var results = ajaxCall(data, './removeData.php');
+                            currentSelect.val(groupId).change();
+                            $.Dialog.close();
+                            var content = '';
+                            console.log(results);
+                            if( results ){
+                              content = $('<div>')
+                                          .addClass('action-message success')
+                                          .html('Elemento borrado');
+                            }else{
+                              content = $('<div>')
+                                          .addClass('action-message error')
+                                          .html('Ocurrió un error');
+                            }
+                            elementChanging.prepend(content).fadeIn('slow', 
+                              function(){
+                                  var el = $(this).find('.action-message');
+                                  setTimeout(function(){
+                                      el.fadeOut('slow',
+                                          function(){
+                                              jQuery(this).remove();
+                                          });
+                                  }, 4500);
+                            });
+                         });
                     }
                 });
             });
@@ -497,6 +529,97 @@ require_once "functions.php";
           });
         break;
         case 5:
+          //Llamada a ajax con servicio para enlistar grupos con su id
+          if( userInfo.type == 0 ){
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 3
+              };
+          }else{
+            var data ={
+                id: userInfo.id,
+                type: userInfo.type,
+                getData: 1
+              };
+          }
+          var results = ajaxCall(data,'./getData.php');
+          content = '<legend>Grupos</legend>';
+          if(results.length > 0){ 
+            content +='<table class="table striped bordered hovered">'+
+                        '<tbody>';
+                          for (var i = 0; i < results.length; i++) {
+                            content += '<tr>'+
+                              '<td>'+results[i].name+'</td>'+
+                              '<td class="text-center"><a href="#">Modificar</a></td>'+
+                              '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
+                            '</tr>';
+                          }
+            content +=  '</tbody>'+
+                      '</table>'+
+                      '<div class="ic-main-container__container__second-container"></div>';
+          }else{
+            content = '<div class="padding20">No hay grupos registrados a cargo.</div>';
+          }
+          elementChanging.html(content);
+
+          $(".ic-main-container__container__delete").on('click', function(){
+                var groupId = $(this).find('input').val();
+                var trow = $(this).parent().parent();
+                $.Dialog({
+                    overlay: true,
+                    shadow: true,
+                    flat: true,
+                    //icon: '<img src="images/excel2013icon.png">',
+                    title: 'Flat window',
+                    content: '',
+                    padding: 10,
+                    onShow: function(_dialog){
+                        var content = '<div class="text-center padding20">' +
+                            '¿Estás seguro de eliminar este grupo?' +
+                            '</div>' +
+                            '<div class="padding20">' +
+                            '<button id="acceptChange" class="place-left button primary">ACEPTAR</button> '+
+                            '<button class="place-right button" type="button" onclick="$.Dialog.close()">CANCELAR</button> '+
+                            '</div>';
+             
+                        $.Dialog.title("Confirmación");
+                        $.Dialog.content(content);
+                        $.Metro.initInputs();
+                        $("#acceptChange").on('click', function(){
+                            var data ={
+                              id: userInfo.id,
+                              removeData: 3,
+                              group: groupId
+                            };
+                            var results = ajaxCall(data, './removeData.php');
+                            $.Dialog.close();
+                            trow.remove();
+                            var content = '';
+                            console.log(results);
+                            if( results ){
+                              content = $('<div>')
+                                          .addClass('action-message success')
+                                          .html('Elemento borrado');
+                            }else{
+                              content = $('<div>')
+                                          .addClass('action-message error')
+                                          .html('Ocurrió un error');
+                            }
+                            elementChanging.prepend(content).fadeIn('slow', 
+                              function(){
+                                  var el = $(this).find('.action-message');
+                                  setTimeout(function(){
+                                      el.fadeOut('slow',
+                                          function(){
+                                              jQuery(this).remove();
+                                          });
+                                  }, 4500);
+                            });
+                         });
+                    }
+                });
+            });
         break;
         case 6:
           //Llamada a ajax con servicio para desplegar la forma para registro de alumno
@@ -615,6 +738,9 @@ require_once "functions.php";
             return false;
           });
         break;
+        case 7:
+
+        break;
         case 8:
           //Llamada a ajax con servicio para desplegar la forma para registro de maestro
           content = '<div class="padding20">'+
@@ -704,6 +830,114 @@ require_once "functions.php";
             return false;
             
           });
+        break;
+        case 9:
+          var data ={
+                id: userInfo.id,
+                getData: 2
+              };
+          var results = ajaxCall(data,'./getData.php');
+          content = '<legend>Maestros</legend>';
+          if(results.length > 0){ 
+            content +='<table class="table striped bordered hovered">'+
+            			'<thead>'+
+            			'<tr>'+
+            				'<th class="text-left" colspan="3">Nombre</th>'+
+            			'</tr>'+
+            			'</thead>'+
+                        '<tbody>';
+                          for (var i = 0; i < results.length; i++) {
+                            content += '<tr>'+
+                              '<td>'+results[i].name+'</td>'+
+                              '<td class="text-center"><a href="#">Modificar</a></td>'+
+                              '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
+                              '</tr>'+
+                            '</tr>';
+                            var groupdata ={
+				                id: results[i].id,
+				                type: 1,
+				                getData: 1
+				              };
+				            var groupresults = ajaxCall(groupdata,'./getData.php');
+				            if(groupresults.length > 0){
+				            	content += '<tr class="group-list"><td colspan="3">' +
+				            							'<i>Grupos a cargo</i><ul>';
+                        		for (var j = 0; j < groupresults.length; j++){
+                        			content += '<li>'+groupresults[j].name+'</li>';
+                        		}
+                        		content += '</ul></td></tr>';
+				            }
+				            var groupresults = null;
+                          }
+            content +=  '</tbody>'+
+                      '</table>'+
+                      '<div class="ic-main-container__container__second-container"></div>';
+          }else{
+            content = '<div class="padding20">No hay maestros registrados.</div>';
+          }
+          elementChanging.html(content);
+
+          $(".ic-main-container__container__delete").on('click', function(){
+                var userId = $(this).find('input').val();
+                var trow = $(this).parent().parent();
+                $.Dialog({
+                    overlay: true,
+                    shadow: true,
+                    flat: true,
+                    //icon: '<img src="images/excel2013icon.png">',
+                    title: 'Flat window',
+                    content: '',
+                    padding: 10,
+                    onShow: function(_dialog){
+                        var content = '<div class="text-center padding20">' +
+                            '¿Estás seguro de eliminar este maestro?' +
+                            '</div>' +
+                            '<div class="padding20">' +
+                            '<button id="acceptChange" class="place-left button primary">ACEPTAR</button> '+
+                            '<button class="place-right button" type="button" onclick="$.Dialog.close()">CANCELAR</button> '+
+                            '</div>';
+             
+                        $.Dialog.title("Confirmación");
+                        $.Dialog.content(content);
+                        $.Metro.initInputs();
+                        $("#acceptChange").on('click', function(){
+                            var data ={
+                              id: userInfo.id,
+                              removeData: 2,
+                              user: userId
+                            };
+                            var results = ajaxCall(data, './removeData.php');
+                            $.Dialog.close();
+                            //changeContent(9);
+                            if (trow.next().attr('class') == 'group-list'){
+                            	trow.next().remove();
+                            }
+                            trow.remove();
+                            var content = '';
+                            console.log(results);
+                            if( results ){
+                              content = $('<div>')
+                                          .addClass('action-message success')
+                                          .html('Elemento borrado');
+                            }else{
+                              content = $('<div>')
+                                          .addClass('action-message error')
+                                          .html('Ocurrió un error');
+                            }
+                            elementChanging.prepend(content).fadeIn('slow', 
+                              function(){
+                                  var el = $(this).find('.action-message');
+                                  setTimeout(function(){
+                                      el.fadeOut('slow',
+                                          function(){
+                                              jQuery(this).remove();
+                                          });
+                                  }, 4500);
+                            });
+                         });
+                    }
+                });
+            });
         break;
         default:
 
