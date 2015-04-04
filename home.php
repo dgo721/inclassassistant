@@ -734,9 +734,6 @@ require_once "functions.php";
           });
         break;
         case 7:
-<<<<<<< Updated upstream
-
-=======
           //Llamada a ajax con servicio para enlistar grupos con su id
           if( userInfo.type == 0 ){
             var data ={
@@ -1057,6 +1054,7 @@ require_once "functions.php";
                     }
                 });
             });
+        break;
         case 10:
           //Llamada a ajax con servicio para enlistar grupos con su id
           if( userInfo.type == 0 ){

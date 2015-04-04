@@ -202,6 +202,7 @@ function removeTask($task){
 	$db->where('id', $task);
 	if($db->delete('task'))
 		return 'successfully deleted task' + $task;
+}
 
 function getStudentsFromClass($class){
 	$db = newDB();
@@ -244,5 +245,4 @@ function getAllStudents(){
 	$students = $db->get('User u', null, 'u.id, u.registerNo, u.name');
 	return $students;
 }
-
 ?>
