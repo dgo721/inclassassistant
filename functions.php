@@ -204,4 +204,45 @@ function removeTask($task){
 		return 'successfully deleted task' + $task;
 }
 
+function getStudentsFromClass($class){
+	$db = newDB();
+	$db->join('UserClass uc', 'uc.idUser=u.id');
+	$db->where('uc.idClass', $class);
+	$students = $db->get('User u', null, 'u.id, u.registerNo, u.name');
+	return $students;
+}
+
+function getAllGroupsReport(){
+	$db = newDB();
+	$db->join('Task t', 't.idClass=c.id', 'LEFT');
+	$db->groupBy('c.id');
+	$groups = $db->get('Class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
+	return $groups;
+}
+
+function getTeacherUserGroupsReport($id){
+	$db = newDB();
+	$db->where('c.idTeacher', $id );
+	$db->groupBy('c.id');
+	$db->join('Task t', 't.idClass=c.id', 'LEFT');
+	$user = $db->get('Class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
+	return $user;
+}
+
+function deleteStudent($id){
+	$db = newDB();
+	$db->where('id', $id);
+	if($db->delete('User')){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function getAllStudents(){
+	$db = newDB();
+	$db->where('u.type', 2);
+	$students = $db->get('User u', null, 'u.id, u.registerNo, u.name');
+	return $students;
+}
 ?>

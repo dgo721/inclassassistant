@@ -34,7 +34,7 @@ function begin( message ){
 											};
 											if( type == 0 ){
 												var teacherId = null;
-												client.query('SELECT c.idTeacher FROM Class c, Task t WHERE c.id = t.idClass AND c.id = ?',
+												client.query('SELECT c.idTeacher FROM Class c, Task t WHERE c.id = t.idClass AND t.id = ?',
 															[data.idTask],
 															function(err, rows, fields) {
 																if (err) throw err;
