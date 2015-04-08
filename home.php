@@ -48,7 +48,7 @@ require_once "functions.php";
           },
           success: function(response, string) {
             console.log(string);
-            ajaxResponse =  response;
+            ajaxResponse = response;
           }
         });
       return ajaxResponse;
@@ -593,7 +593,7 @@ require_once "functions.php";
                             };
                             var results = ajaxCall(data, './removeData.php');
                             $.Dialog.close();
-                            changeContent(5);
+                            //changeContent(5);
                             var content = '';
                             console.log(results);
                             if( results ){
