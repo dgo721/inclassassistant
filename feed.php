@@ -1,4 +1,5 @@
 <?
+require_once "functions.php";
 require_once "session.php";
 
 require_once "authorizeUserClassTask.php";

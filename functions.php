@@ -19,7 +19,7 @@ function debug_to_console( $data ) {
 function registerUser($registerNo, $registerInfo){
 	$db = newDB();
 	$db->where('registerNo', $registerNo);
-	$user = $db->getOne('User', 'id');
+	$user = $db->getOne('user', 'id');
 	if( $db->count == 0 ){
 		$insert = Array(
 	    	'registerNo' => $registerNo,
@@ -40,7 +40,7 @@ function registerUserClass($id, $class){
     	'idUser' => $id,
     	'idClass' => $class
   	);
-	$id = $db->insert ('UserClass', $insert);
+	$id = $db->insert ('userclass', $insert);
 	return $id;
 }
 
@@ -51,7 +51,7 @@ function registerGroup($groupname, $grouplanguage, $groupprof){
     	'idTeacher' => $groupprof,
     	'idLanguage' => $grouplanguage
   	);
-	$id = $db->insert('Class', $insert); //Syntax Error
+	$id = $db->insert('class', $insert); //Syntax Error
 
 	return $id;
 }
@@ -78,8 +78,15 @@ function checkUserLogin($registerNo, $userpass){
 	$userpass = sha1($userpass);
 	$db->where('registerNo', $registerNo );
 	$db->where('password', $userpass );
-	$user = $db->getOne('User', 'id, type, name');
+	$user = $db->getOne('user', 'id, type, name');
 
+	return $user;
+}
+
+function checkUserInfo($registerNo){
+	$db = newDB();
+	$db->where('registerNo', $registerNo );
+	$user = $db->getOne('user', 'name');
 	return $user;
 }
 
@@ -88,27 +95,27 @@ function getUserGroups($id){
 
 	$db->join('Class c', 'c.id=uc.idClass');
 	$db->where('uc.idUser', $id );
-	$groups = $db->get('UserClass uc', null, 'c.id, c.name');
+	$groups = $db->get('userclass uc', null, 'c.id, c.name');
 	return $groups;
 }
 
 function getTeacherUserGroups($id){
 	$db = newDB();
 	$db->where('c.idTeacher', $id );
-	$user = $db->get('Class c', null, 'c.id, c.name');
+	$user = $db->get('class c', null, 'c.id, c.name');
 	return $user;
 }
 
 function getAllGroups(){
 	$db = newDB();
-	$groups = $db->get('Class c', null, 'c.id, c.name');
+	$groups = $db->get('class c', null, 'c.id, c.name');
 	return $groups;
 }
 
 function getTeachers(){
 	$db = newDB();
 	$db->where('type', 1);
-	$users = $db->get('User u', null, 'u.id, u.name');
+	$users = $db->get('user u', null, 'u.id, u.name');
 	return $users;
 }
 
@@ -116,7 +123,7 @@ function getTasksFromClass($class){
 	$db = newDB();
 	$db->where('idClass', $class);
 	$db->orderBy('t.registerDate','DESC');
-	$tasks = $db->get('Task t', null, 't.id, t.name, t.period, t.active');
+	$tasks = $db->get('task t', null, 't.id, t.name, t.period, t.active');
 	return $tasks;
 }
 
@@ -124,14 +131,14 @@ function authorizeUserInClass($class, $user){
 	$db = newDB();
 	$db->where('uc.idClass', $class);
 	$db->where('uc.idUser', $user);
-	$uc = $db->get('UserClass uc', null, 'uc.id');
+	$uc = $db->get('userclass uc', null, 'uc.id');
 
 	if( $db->count > 0 ){
 		return 1;
 	}else{
 		$db->where('c.id', $class);
 		$db->where('c.idTeacher', $user);
-		$groups = $db->get('Class c', null, 'c.id');
+		$groups = $db->get('class c', null, 'c.id');
 		if( $db->count > 0 ){
 			return 1;
 		}else{
@@ -143,14 +150,14 @@ function authorizeUserInClass($class, $user){
 function getClassInfo($class){
 	$db = newDB();
 	$db->where('c.id', $class);
-	$group = $db->getOne('Class c', 'c.name, c.idLanguage');
+	$group = $db->getOne('class c', 'c.name, c.idLanguage');
 	return $group;
 }
 
 function getTaskInfo($task){
 	$db = newDB();
 	$db->where('t.id', $task);
-	$task = $db->getOne('Task t', 't.name, t.active');
+	$task = $db->getOne('task t', 't.name, t.active');
 	return $task;
 }
 
@@ -160,7 +167,7 @@ function updateActiveTask($task, $closeOrOpen){
 	    'active' => $closeOrOpen
 	);
 	$db->where ('id', $task);
-	if ($db->update ('Task', $update))
+	if ($db->update ('task', $update))
 	    return $task;
 }
 
@@ -173,7 +180,7 @@ function getRecentTasks($user, $userType){
 		$sq = $db->subQuery ();
 		$sq->join('Class c', 'c.id=uc.idClass');
 		$sq->where('uc.idUser', $user );
-		$sq->get('UserClass uc', null, 'c.id');
+		$sq->get('userclass uc', null, 'c.id');
 		$db->where ('t.idClass', $sq, 'in');
 	}
 	$db->where('t.active', 1);
@@ -206,9 +213,9 @@ function removeTask($task){
 
 function getStudentsFromClass($class){
 	$db = newDB();
-	$db->join('UserClass uc', 'uc.idUser=u.id');
+	$db->join('userclass uc', 'uc.idUser=u.id');
 	$db->where('uc.idClass', $class);
-	$students = $db->get('User u', null, 'u.id, u.registerNo, u.name');
+	$students = $db->get('user u', null, 'u.id, u.registerNo, u.name');
 	return $students;
 }
 
@@ -216,7 +223,7 @@ function getAllGroupsReport(){
 	$db = newDB();
 	$db->join('Task t', 't.idClass=c.id', 'LEFT');
 	$db->groupBy('c.id');
-	$groups = $db->get('Class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
+	$groups = $db->get('class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
 	return $groups;
 }
 
@@ -224,15 +231,16 @@ function getTeacherUserGroupsReport($id){
 	$db = newDB();
 	$db->where('c.idTeacher', $id );
 	$db->groupBy('c.id');
-	$db->join('Task t', 't.idClass=c.id', 'LEFT');
-	$user = $db->get('Class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
+	$db->join('task t', 't.idClass=c.id', 'LEFT');
+	$user = $db->get('class c', null, 'c.id, c.name, SUM(t.active = 1) as active, SUM(t.active = 0) as inactive');
 	return $user;
 }
 
-function deleteStudent($id){
+function deleteStudent($id, $class){
 	$db = newDB();
-	$db->where('id', $id);
-	if($db->delete('User')){
+	$db->where('idUser', $id);
+	$db->where('idClass', $class);
+	if($db->delete('userclass')){
 		return true;
 	}else{
 		return false;
@@ -242,7 +250,42 @@ function deleteStudent($id){
 function getAllStudents(){
 	$db = newDB();
 	$db->where('u.type', 2);
-	$students = $db->get('User u', null, 'u.id, u.registerNo, u.name');
+	$students = $db->get('user u', null, 'u.id, u.registerNo, u.name');
 	return $students;
+}
+
+function getStudent($student){
+	$db = newDB();
+	$db->where('u.id', $student);
+	$student = $db->getOne('user u', 'u.id, u.registerNo, u.name');
+	return $student;
+}
+
+function updateUser($id, $registerNo, $registerInfo){
+	$db = newDB();
+	$db->where('id', $id);
+	if($registerInfo["pass"] != ""){
+		$update = Array(
+	    	'registerNo' => $registerNo,
+	    	'name' => $registerInfo["name"],
+	    	'password' => $db->func('SHA1(?)', Array($registerInfo["pass"]))
+	  	);
+	}else{
+		$update = Array(
+	    	'registerNo' => $registerNo,
+	    	'name' => $registerInfo["name"]
+	  	);
+	}
+	$db->update('user', $update);
+	return $id;
+}
+
+function getPostsFromTask($task){
+	$db = newDB();
+	$db->where('sc.idTask', $task);
+	$db->join('user u', 'u.id=sc.idUser', 'LEFT');
+	$db->orderBy('sc.submissionDate','ASC');
+	$results = $db->get('sentcode sc', null, 'sc.code, sc.solution, sc.submissionDate, u.id as idUser, u.name, u.type');
+	return $results;
 }
 ?>

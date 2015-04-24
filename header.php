@@ -53,7 +53,7 @@
                 <span class="icon-cog"></span>
             </a>
             <ul class="dropdown-menu place-right" data-role="dropdown">
-                <li><a href="#">Configurar Cuenta</a></li>
+                <li onclick="changeContent(12);"><a href="#">Configurar Cuenta</a></li>
                 <li><a href="logout.php">Cerrar Sesión</a></li>
             </ul>
         </div>
@@ -62,7 +62,7 @@
         ?>
         <span class="element-divider place-right"></span>
 
-        <button class="element place-right">
+        <button class="element place-right" id="user-name-header">
             <? echo isset($_SESSION) ? '<i class="icon-user on-left"></i>'.$_SESSION['name'] : "";?>
         </button>
     </div>
