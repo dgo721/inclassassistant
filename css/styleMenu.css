@@ -1,3 +1,7 @@
+/*
+  Stylesheet del menú principal
+  Nota: estas modificaciones son para sobreescribir los estilos de METRO UI;
+*/
 .clear{
 	clear: both;
 }
@@ -70,5 +74,24 @@
 
 .metro .bg-lightGreen {
   background-color: #A8D37B !important;
+}
+
+.login-title{
+	color: white;
+	text-align: center;
+	margin: 42px;
+	font-size: 40px;
+}
+
+.footer-login{
+	color: white;
+	border-top: white solid 1px;
+	text-align: right;
+	padding: 15px;
+	font-size: 10px;
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	width: 100%;
 }
 

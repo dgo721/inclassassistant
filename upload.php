@@ -1,4 +1,7 @@
 <?php
+/*
+	Script para subir archivos al servidor
+*/
 $output_dir = "./uploads/";
 if(isset($_FILES["myfile"]))
 {

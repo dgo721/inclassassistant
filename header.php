@@ -1,50 +1,19 @@
+<!--
+
+InClass Assistant 2015
+Archivo con el encabezado
+
+-->
 <header>
 <nav class="navigation-bar fixed-top">
 <div class="navigation-bar-content">
-    <a href="home.php" class="element"><span class="icon-tree-view on-left-more"></span> InClass Assitant </a>
+    <a href="home.php" class="element"><span class="icon-tree-view on-left-more"></span> InClass Assistant </a>
     <span class="element-divider"></span>
 
     <a class="pull-menu" href="#"></a>
-    <!--<ul class="element-menu">
-        <li>
-            <a class="dropdown-toggle" href="#">Menú</a>
-            <ul class="dropdown-menu " data-role="dropdown">
-                <li><a href="#">Test</a></li>
-                <li>
-                    <a href="#" class="dropdown-toggle">Test</a>
-                    <ul class="dropdown-menu" data-role="dropdown">
-                        <li><a href="#">Test</a></li>
-                        <li><a href="#">Test</a></li>
-                        <div class="divider"></div>
-                        <li><a href="#">Test</a></li>
-                        <li><a href="#">Test</a></li>
-                        <li><a href="#">Test</a></li>
-                        <li><a href="#">Test</a></li>
-                        <li><a href="#">Test</a></li>
-                    </ul>
-                </li>
-                <li class="divider"></li>
-                <li><a href="#">Test 2</a></li>
-                <li class="disabled"><a href="#">Test 2</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Test 2</a></li>
-            </ul>
-        </li>
-    </ul>-->
+
 
     <div class="no-tablet-portrait">
-        <!--<span class="element-divider"></span>
-        <a class="element brand" href="#"><span class="icon-spin"></span></a>
-        <span class="element-divider"></span>
-
-        <div class="element input-element">
-            <form>
-                <div class="input-control text">
-                    <input type="text" placeholder="Search...">
-                    <button class="btn-search"></button>
-                </div>
-            </form>
-        </div>-->
         <?
         if( isset($_SESSION['id']) ){
         ?>

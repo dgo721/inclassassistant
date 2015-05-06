@@ -1,3 +1,8 @@
+<!--
+
+InClass Assistant 2015
+
+-->
 <?
 require_once "functions.php";
 require_once "session.php";
@@ -31,12 +36,15 @@ require_once "session.php";
 
     <title>InClass Assistant</title>
     <script src="./metro/min/metro.min.js"></script>
+
+    <!-- Aquí se declara la información del usuario que será utilizada para homeControl.js -->
     <script>
       var userInfo = {
         id: <?php echo $_SESSION['id']?>,
         type: <?php echo $_SESSION['type']?>
       };
     </script>
+
     <script src="./js/homeControl.js"></script>
 </head>
 <body class="metro" cz-shortcut-listen="true">
@@ -63,9 +71,11 @@ require_once "session.php";
         <li onclick="changeContent(9);"><a href="#">Modificar Maestro</a></li>
         <?php } 
         }?>
+        <?php if($_SESSION['type'] < 2){?>
         <li class="menu-title">Ver reportes</li>
         <li onclick="changeContent(10);"><a href="#"><span class="icon-user on-left on-left-more"></span>Alumnos</a></li>
         <li onclick="changeContent(11);"><a href="#"><span class="icon-tree-view on-left on-left-more"></span>Grupos</a></li>
+        <?}?>
     </ul>
     </div>
     <div class="ic-main-container__container">
@@ -105,10 +115,6 @@ require_once "session.php";
         ?>
         </tbody>
       </table>
-      <!--<div class="padding20">
-        <legend>In Class Assistant</legend>
-        BLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget nisi eget lectus volutpat vehicula. Sed eu molestie ex. Sed quis congue lacus, at commodo ante. Etiam eget felis gravida, condimentum lacus ut, tempus metus. Vestibulum ac ullamcorper leo. Nulla a congue nisi. Praesent efficitur bibendum tincidunt.
-      </div>-->
     </div>
 </div>
 </body>

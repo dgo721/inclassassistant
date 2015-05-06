@@ -1,3 +1,9 @@
+<!--
+
+InClass Assistant 2015
+Vista de Historial
+
+-->
 <?
 require_once "functions.php";
 require_once "session.php";

@@ -1,3 +1,35 @@
+/*
+
+InClass Assistant 2015
+
+Este es el controlador principal de la aplicación
+Dentro de sus funciones se encuentra:
+  -Llamadas ajax para obtener, insertar y modificar información de la base de datos
+  -Manejo del cambio de contenido del home.php de la aplicación
+
+Su estructura es un switch cuyas opciones son llamadas a través del menú que se despliega en home.php
+Dentro de cada opción
+
+*/
+
+/*
+
+Función ajax para manejo de las llamadas de todo el controlador
+recibe:
+  -data: objeto con la información que el servidor debe procesar
+  -url: url de a que archivo pedir la información
+regresa:
+  -json con una respuesta
+
+El controlador utiliza componentes dinámicos obtenidos de METRO UI como:
+-Diálogos
+-Datatables
+
+Si existe duda con esos plugins se puede consultar la documentación de este framework.
+
+http://metroui.org.ua/
+
+*/
 function ajaxCall(data, url){
   var ajaxResponse;
     $.ajax({
@@ -16,12 +48,21 @@ function ajaxCall(data, url){
   return ajaxResponse;
 }
 
+/*
+
+Función que se ejecuta cuando el usuario da click en alguna de las opciones del menú
+recibe:
+  -menuNumber: identificador que se somete al switch para determinar el contenido que la aplicación debe mostrar.
+
+*/
 function changeContent( menuNumber ){
   var elementChanging = $(".ic-main-container__container");
   var content = "";
   switch ( menuNumber ){
+    /*
+      Caso 1: mostrar los grupos del usuario a los que pertenece o es maestro o administrador
+    */
     case 1:
-    //Llamada a ajax con servicio para enlistar grupos con su id
     if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -56,8 +97,10 @@ function changeContent( menuNumber ){
                 '</table>';
       elementChanging.html(content);
     break;
+    /*
+      Caso 2: mostrar forma para registrar Actividad
+    */
     case 2:
-      //Llamada a ajax con servicio para desplegar la forma para registro de actividad
       if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -105,8 +148,6 @@ function changeContent( menuNumber ){
         }
       elementChanging.html(content);
       $.Metro.initInputs();
-      elementChanging.html(content);
-      $.Metro.initInputs();
       $("#form-task").submit(function(e){
         var $form =  $(this);
         var group = $form.find("select[name='task-group']").val(),
@@ -146,8 +187,11 @@ function changeContent( menuNumber ){
         return false;
       });
     break;
+
+    /*
+      Caso 3: mostrar controles para modificar estado de actividad o bien eliminarla
+    */
     case 3:
-      //Llamada a ajax con servicio para enlistar grupos con su id
       if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -190,19 +234,24 @@ function changeContent( menuNumber ){
         if(results.length > 0){ 
           content = '<legend style="margin-top: 30px;">Actividades</legend>'+
                 '<table class="table striped bordered hovered">'+
-                  '<tbody>';
+                  '<tbody>'+
+                  '<th>ID</th>'+
+                  '<th>Nombre de la actividad</th>'+
+                  '<th></th>'+
+                  '<th></th>'+
+                  '<th></th>';
           var activeOpen = '';
           var activeClose = '';
           var activeClass = '';
           for (var i = 0; i < results.length; i++) {
-            activeOpen = results[i].active == 0 ? '<a href="#" class="ic-main-container__container__open"><input type="hidden" value="'+results[i].id+'"/>Abrir Actividad</a>' : '';
-            activeClose = results[i].active == 1 ? '<a href="#" class="ic-main-container__container__close"><input type="hidden" value="'+results[i].id+'"/>Cerrar Actividad</a>' : '';
+            activeOpen = results[i].active == 0 ? '<a href="#" class="ic-main-container__container__open"><input type="hidden" value="'+results[i].id+'"/>Abrir Actividad</a>' : '--';
+            activeClose = results[i].active == 1 ? '<a href="#" class="ic-main-container__container__close"><input type="hidden" value="'+results[i].id+'"/>Cerrar Actividad</a>' : '--';
 
             activeClass = results[i].active == 0 ? 'bg-lightRed' : 'bg-lightGreen';
             content +='<tr class="'+ activeClass +'">'+
                         '<td>'+results[i].period+'</td>'+
                         '<td>'+results[i].name+'</td>'+
-                        '<td class="text-center"><a href="#">Modificar</a></td>'+
+                        //'<td class="text-center"><a href="#">Modificar</a></td>'+
                         '<td class="text-center">'+ activeOpen +'</td>'+
                         '<td class="text-center">'+ activeClose +'</td>'+
                         '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
@@ -346,8 +395,10 @@ function changeContent( menuNumber ){
         });
       });
     break;
+    /*
+      Caso 4: mostrar forma para registrar grupo
+    */
     case 4:
-      //Llamada a ajax con servicio para desplegar la forma para registro de grupo
       content = '<div class="padding20">'+
                 '<legend>Registrar Grupo</legend>'+
                 '<form  name="form-group" id="form-group">'+
@@ -437,6 +488,7 @@ function changeContent( menuNumber ){
               }, 4500);
         });
       }
+      //Inicialización de plugin uploader dinámico
       var fileCount = 0;
       var settings = {
           url: "./upload.php",
@@ -487,8 +539,10 @@ function changeContent( menuNumber ){
         return false;
       });
     break;
+    /*
+      Caso 5: mostrar controles para eliminar grupo
+    */
     case 5:
-      //Llamada a ajax con servicio para enlistar grupos con su id
       if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -506,11 +560,13 @@ function changeContent( menuNumber ){
       content = '<legend>Grupos</legend>';
       if(results.length > 0){ 
         content +='<table class="table striped bordered hovered">'+
-                    '<tbody>';
+                    '<tbody>'+
+                    '<th>Nombre de grupo</th>'+
+                    '<th></th>';
                       for (var i = 0; i < results.length; i++) {
                         content += '<tr>'+
                           '<td>'+results[i].name+'</td>'+
-                          '<td class="text-center"><a href="#">Modificar</a></td>'+
+                          //'<td class="text-center"><a href="#">Modificar</a></td>'+
                           '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
                         '</tr>';
                       }
@@ -580,8 +636,10 @@ function changeContent( menuNumber ){
             });
         });
     break;
+    /*
+      Caso 6: mostrar forma de registro de alumno
+    */
     case 6:
-      //Llamada a ajax con servicio para desplegar la forma para registro de alumno
       content = '<div class="padding20">'+
                 '<legend>Registrar Alumno</legend>'+
                 '<form name="form-student" id="form-student">'+
@@ -694,8 +752,10 @@ function changeContent( menuNumber ){
         return false;
       });
     break;
+    /*
+      Caso 7: mostrar controles para modificar forma de alumno
+    */
     case 7:
-      //Llamada a ajax con servicio para enlistar grupos con su id
       if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -770,6 +830,8 @@ function changeContent( menuNumber ){
           
           $(".ic-main-container__container__second-container").html(content);
           if( $('#reportTable').length > 0 ){
+          //Datatable plugin que indica que cuando se ordene, busque o pagine la tabla ejecute un binding de los delete o modify de los elementos desplegados
+          
           table = $('#reportTable')
             .on( 'order.dt',  function () { bindDelete(); bindModify(); } )
             .on( 'search.dt', function () { bindDelete(); bindModify(); } )
@@ -962,8 +1024,10 @@ function changeContent( menuNumber ){
         tableData()
       });
     break;
+    /*
+      Caso 8: mostrar forma para registrar maestro
+    */
     case 8:
-      //Llamada a ajax con servicio para desplegar la forma para registro de maestro
       content = '<div class="padding20">'+
                 '<legend>Registrar Maestro</legend>'+
                 '<form name="form-professor" id="form-professor">'+
@@ -1051,6 +1115,10 @@ function changeContent( menuNumber ){
         
       });
     break;
+
+    /*
+      Caso 9: mostrar controles para eliminar maestro
+    */
     case 9:
       var data ={
             id: userInfo.id,
@@ -1060,16 +1128,13 @@ function changeContent( menuNumber ){
       content = '<legend>Maestros</legend>';
       if(results.length > 0){ 
         content +='<table class="table striped bordered hovered">'+
-        			'<thead>'+
-        			'<tr>'+
-        				'<th class="text-left" colspan="3">Nombre</th>'+
-        			'</tr>'+
-        			'</thead>'+
+        			'<th>Nombre</th>'+
+              '<th></th>'+
                     '<tbody>';
                       for (var i = 0; i < results.length; i++) {
                         content += '<tr>'+
                           '<td>'+results[i].name+'</td>'+
-                          '<td class="text-center"><a href="#">Modificar</a></td>'+
+                          //'<td class="text-center"><a href="#">Modificar</a></td>'+
                           '<td class="text-center"><a href="#" class="ic-main-container__container__delete"><input type="hidden" value="'+results[i].id+'"/>Eliminar</a></td>'+
                           '</tr>'+
                         '</tr>';
@@ -1159,8 +1224,11 @@ function changeContent( menuNumber ){
             });
         });
     break;
+
+    /*
+      Caso 10: mostrar controles para ver reporte de alumnos
+    */
     case 10:
-      //Llamada a ajax con servicio para enlistar grupos con su id
       if( userInfo.type == 0 ){
         var data ={
             id: userInfo.id,
@@ -1240,6 +1308,10 @@ function changeContent( menuNumber ){
         }
         });
     break;
+
+    /*
+      Caso 11: mostrar controles para ver reporte de grupos
+    */
     case 11:
       //Llamada a ajax con servicio para enlistar grupos con su id
       if( userInfo.type == 0 ){
@@ -1378,11 +1450,8 @@ function changeContent( menuNumber ){
                           });
                   }, 1500);
             });
-          }
-          
-          
+          }  
         }
-
         return false;
       });
     break;

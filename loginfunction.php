@@ -1,5 +1,7 @@
 <?
-
+/*
+    Funciones para determinar inicio de sesión 
+*/
 require_once ('functions.php');
 
 if (isset($_POST['idlogin']) and isset($_POST['passlogin'])){
@@ -20,10 +22,11 @@ if (isset($_POST['idlogin']) and isset($_POST['passlogin'])){
         $_SESSION['name'] = $user['name'];
         $_SESSION['type'] = $user['type'];
 
-        header("Location:home.php");
+        //header("Location:home.php");
+        echo 1;
 
     } else {
-        echo '<script>alert("Usuario o contraseña incorrectos.")</script>';
+        echo 0;
     }
 
 }

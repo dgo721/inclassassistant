@@ -1,10 +1,15 @@
+<!--
+
+InClass Assistant 2015
+Feed en tiempo real
+
+-->
 <?
 require_once "functions.php";
 require_once "session.php";
 
 require_once "authorizeUserClassTask.php";
 $task = getTaskInfo($_GET['tid']);
-var_dump($task);
 $class = getClassInfo($_GET['gid']);
 if( !$task['active'] ){
   header("Location:home.php");
@@ -59,6 +64,11 @@ if( !$task['active'] ){
       break;
       default:   
     };
+
+    /*
+      Comunicación con servidor node, esto hace la conexión posible, cada emit envía una señal al servidor con un mensaje
+      cada on recibe información del servidor.
+    */
     var websocket = io.connect("http://localhost:6969");
     var  roomInfo = {
       'sender': <?php echo $_SESSION['id']?>,  //user
@@ -166,34 +176,8 @@ if( !$task['active'] ){
         </ul>
     </nav>
     <div class="ic-main-container__send-container">
-        <textarea class="ic-main-container__send-container__textarea" placeholder="type text">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
-}</textarea>
+        <textarea class="ic-main-container__send-container__textarea" placeholder="Inserta tu código aquí">
+</textarea>
         <input class="place-right ic-main-container__send-container__button" type="button" value="Enviar" onclick="submitMessage();">
         <? if($_SESSION['type'] != 2){ ?>
         <div class="input-control checkbox place-right ic-main-container__send-container__checkbox-container" data-role="input-control">
@@ -214,148 +198,7 @@ public class Class<T, V> implements MyInterface {
         <? } ?>
     </div>
     <div class="ic-main-container__feed-container">
-      
-
-        <!--<div class="notice">
-            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
-            <div class="padding20">
-                <div class="clear"></div>
-                <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
-}</textarea>
-            </div>
-        </div>
-
-
-
-
-        <div class="notice marker-on-right bg-green">
-            <div class="ic-main-container__feed-container__studentinfo fg-white place-right" style="margin-bottom: 20px;">María Delgado 10:30 a.m. 11/02/2015</div>
-            <div class="padding20">
-                <div class="clear"></div>
-                <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
-}</textarea>
-            </div>
-        </div>
-        <div class="notice">
-            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
-            <div class="padding20">
-                <div class="clear"></div>
-                <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
-}</textarea>
-            </div>
-        </div>
-        <div class="notice">
-            <div class="ic-main-container__feed-container__studentinfo fg-white">María Delgado 10:30 a.m. 11/02/2015</div>
-            <div class="padding20">
-                <div class="clear"></div>
-                <textarea class="ic-main-container__feed-container__textarea" placeholder="type text">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-  VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
-  
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
-
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
-}</textarea>
-            </div>
-        </div>-->
+    
     </div>
 </div>
 </body>

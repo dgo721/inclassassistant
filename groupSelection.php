@@ -1,9 +1,15 @@
+<!--
+
+InClass Assistant 2015
+Vista de grupo y sus actividades
+
+-->
 <?
 require_once "functions.php";
 require_once "session.php";
 
 require_once "authorizeUserClass.php";
-$class = getClassInfo($_GET['gid']);
+$class = getClassInfo($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,4 +1,8 @@
 <?php 
+
+/*
+	Script para eliminar información en la base de datos
+*/
 require_once ('functions.php');
 
 if (isset($_POST['id']) and isset($_POST['removeData'])) {

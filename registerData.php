@@ -1,4 +1,7 @@
-<?php 
+<?php
+/*
+	Script para registrar información en la base de datos
+*/ 
 require_once ('functions.php');
 
 if (isset($_POST['id']) and isset($_POST['registerData'])) {
