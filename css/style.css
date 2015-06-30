@@ -1,3 +1,7 @@
+/*
+  Stylesheet de la aplicación en general
+  Nota: estas modificaciones son para sobreescribir los estilos de METRO UI;
+*/
 .clear{
 	clear: both;
 }
@@ -10,6 +14,11 @@
 	position: fixed;
 	width: 100%;
 	left: 5%;
+}
+
+.ic-main-container .ic-main-container__breadcrumbs--record{
+	left: auto;
+	position: relative;
 }
 
 .ic-main-container .ic-main-container__send-container{
@@ -34,6 +43,13 @@
 	min-height: 100px;
 	width: 50%;
 	margin-bottom: 10px;
+}
+
+.ic-main-container .ic-main-container__feed-container--record{
+	left: 0%;
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 800px;
 }
 
 .ic-main-container .ic-main-container__send-container .ic-main-container__send-container__textarea{

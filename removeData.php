@@ -1,4 +1,8 @@
 <?php 
+
+/*
+	Script para eliminar información en la base de datos
+*/
 require_once ('functions.php');
 
 if (isset($_POST['id']) and isset($_POST['removeData'])) {
@@ -25,8 +29,8 @@ if (isset($_POST['id']) and isset($_POST['removeData'])) {
 			}
 	        break;
 	    case 3:
-	        if (isset($_POST['student'])) {
-				echo deleteStudent($_POST['student']);
+	        if (isset($_POST['student']) and isset($_POST['group']) ) {
+				echo deleteStudent($_POST['student'], $_POST['group']);
 	    	}else{
 				echo "No proper data";
 			}

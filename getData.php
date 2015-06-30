@@ -1,4 +1,7 @@
 <?php 
+/*
+	Script para manejar cualquier request para obtener datos de la base de datos
+*/
 require_once ('functions.php');
 
 if (isset($_POST['id']) and isset($_POST['getData'])) {
@@ -29,6 +32,13 @@ if (isset($_POST['id']) and isset($_POST['getData'])) {
 	        break;
 	    case 8:
 	    	 echo json_encode(getAllStudents());
+	    	break;
+	    case 9:
+	    	if (isset($_POST['student'])) {
+				echo json_encode(getStudent($_POST['student']));
+	    	}else{
+				echo "No proper data";
+			}
 	    	break;
 	    default:
 	}

@@ -1,8 +1,15 @@
+<!--
+
+InClass Assistant 2015
+Vista de grupo y sus actividades
+
+-->
 <?
+require_once "functions.php";
 require_once "session.php";
 
 require_once "authorizeUserClass.php";
-$class = getClassInfo($_GET['gid']);
+$class = getClassInfo($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,10 +57,16 @@ $class = getClassInfo($_GET['gid']);
             ?>
               <tr class="">
                 <td><? echo $result['name'];?></td>
-                <td class="text-center"><a href="#">Ver historial</a></td>
+                <td class="text-center"><a href=<? echo '"records.php?gid='.$_GET['id'].'&tid='.$result['id'].'"'?>>Ver historial</a></td>
                 <td class="text-center"><? if($result['active']){ ?><a href=<? echo '"feed.php?gid='.$_GET['id'].'&tid='.$result['id'].'"'?>>Ir a Actividad<span class="icon-new-tab on-right"></span></a><? } ?></td>
               </tr>
             <?
+          }
+          if( count($results) <= 0){?>
+            <tr class="">
+              <td>No existen actividades registradas.</td>
+            </tr>
+          <?
           }
           ?>
         </tbody>

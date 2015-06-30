@@ -1,4 +1,7 @@
-<?php 
+<?php
+/*
+	Script para registrar información en la base de datos
+*/ 
 require_once ('functions.php');
 
 if (isset($_POST['id']) and isset($_POST['registerData'])) {
@@ -69,6 +72,18 @@ if (isset($_POST['id']) and isset($_POST['registerData'])) {
 				echo "No proper data";
 			}
 	   		break;
+	   	case 5:
+	   		//No verification of password because it might come as blank
+	    	if (isset($_POST['name']) and isset($_POST['registerNo']) and isset($_POST['student'])) {
+	    		$registerNo = $_POST['registerNo'];
+				$registerInfo['name'] = $_POST['name'];
+				$registerInfo['pass'] = $_POST['pass'];
+				echo updateUser($_POST['student'], $registerNo, $registerInfo);
+	    	}else{
+				echo "No proper data";
+			}
+	   		break;
+	   		
 	    default:
 	    	echo "No proper data"; 
 	}
